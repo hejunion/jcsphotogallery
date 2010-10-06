@@ -99,18 +99,21 @@ public class PopUpImgShow extends PopupPanel{
 		bottomPanel.setPixelSize(popUpSize, 50);
 
 		next = new Button("Next");
+		next.setWidth("50px");		// if the size is not specified, the IE browser merges two button in one.
 		next.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				nextImg();}} );
 		bottomPanel.add(next, popUpSize-160, 10);
 
 		previous = new Button("Prev");
+		previous.setWidth("50px");
 		previous.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				previousImg();}} );
-		bottomPanel.add(previous, popUpSize-220, 10);
+		bottomPanel.add(previous, popUpSize-240, 10);
 
 		close = new Button("Close");
+		close.setWidth("60px");
 		close.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				closeImg();}} );

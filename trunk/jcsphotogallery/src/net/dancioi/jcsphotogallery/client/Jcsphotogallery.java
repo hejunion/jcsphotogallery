@@ -48,6 +48,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class Jcsphotogallery implements EntryPoint {
 
+	//TODO solve the prev button on popUpPanel for IE browser.
+	//TODO add autoplay on popUpPanel.
+	
 	public String galleryVersion = "1.0.1";
 
 	Label header;

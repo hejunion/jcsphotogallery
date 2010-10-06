@@ -1,5 +1,7 @@
 /**
  * 		JcsPhotoGallery
+ *
+ *	Version 1.0.1
  * 
  * 
  * For details about this project see the following web pages:

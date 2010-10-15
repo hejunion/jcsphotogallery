@@ -76,6 +76,12 @@ public class PopUpImgShow extends PopupPanel{
 	/* cache the next and previous image		*/
 	Image imgCacheN;
 	Image imgCacheP;
+	
+	
+	Button play;				// button AUTO PLAY
+	boolean playFlag = true;
+	Timer tPlay;
+	
 
 	public PopUpImgShow(int imgStart, String imgPath, String []imgFile, String []imgName,  String []imgComment){
 		super(true);
@@ -105,6 +111,24 @@ public class PopUpImgShow extends PopupPanel{
 		imgPanelSize = popUpSize-40;
 		imgPanel.setPixelSize(imgPanelSize, imgPanelSize);
 		ap.add(imgPanel, 20,1);
+		
+		play = new Button("Play");
+		play.setWidth("60px");
+		play.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(playFlag){
+					autoPlay(true);
+					play.setText("Stop");
+					playFlag = false;
+				}
+				else{
+					autoPlay(false);
+					play.setText("Play");
+					playFlag = true;
+				}
+				}} );
+		ap.add(play, popUpSize-60, popUpSize-80);
+		
 
 		bottomPanel = new AbsolutePanel();
 		bottomPanel.setPixelSize(popUpSize, 50);
@@ -113,6 +137,7 @@ public class PopUpImgShow extends PopupPanel{
 		next.setWidth("50px");		// if the size is not specified, the IE browser merges two button in one.
 		next.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				if(!playFlag){autoPlay(false);play.setText("Play");playFlag = true;}
 				nextImg();}} );
 		bottomPanel.add(next, popUpSize-160, 10);
 
@@ -120,6 +145,7 @@ public class PopUpImgShow extends PopupPanel{
 		previous.setWidth("50px");
 		previous.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				if(!playFlag){autoPlay(false);play.setText("Play");playFlag = true;}
 				previousImg();}} );
 		bottomPanel.add(previous, popUpSize-240, 10);
 
@@ -304,4 +330,23 @@ public class PopUpImgShow extends PopupPanel{
 		if(i>0)imgCacheP = new Image(imgPath+imgFile[i-1]);
 	}
 
+	/**
+	 * AutoPlay method.
+	 * @param flag 
+	 */
+	private void autoPlay(boolean flag){
+		if(flag){	
+			tPlay = new Timer() {
+			      @Override
+			      public void run() {
+			    	  nextImg();
+			      }
+			    };
+			    tPlay.scheduleRepeating(10000);	// wait 10 seconds between pictures. 
+		}
+		else{
+			tPlay.cancel();
+		}
+	}
+	
 }

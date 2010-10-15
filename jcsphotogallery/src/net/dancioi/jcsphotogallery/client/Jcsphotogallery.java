@@ -50,7 +50,7 @@ public class Jcsphotogallery implements EntryPoint {
 
 	//TODO add autoplay on popUpPanel.
 	
-	public String galleryVersion = "1.0.2";
+	public String galleryVersion = "1.0.3";
 
 	Label header;
 

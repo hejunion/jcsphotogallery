@@ -26,6 +26,7 @@ package net.dancioi.jcsphotogallery.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -37,7 +38,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
  * This class shows the selected image 
  * (from the center panel) on a PopUp panel.
  *  
- * @version 1.0 
+ * @version 1.1 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
@@ -65,6 +66,16 @@ public class PopUpImgShow extends PopupPanel{
 	Label lImgComment;			// image comment
 
 	int currentImg;
+	
+	/* add a loading message		*/
+	String loading;
+	Label loadingLabel;
+	int ind = 1;
+	Timer t;
+	
+	/* cache the next and previous image		*/
+	Image imgCacheN;
+	Image imgCacheP;
 
 	public PopUpImgShow(int imgStart, String imgPath, String []imgFile, String []imgName,  String []imgComment){
 		super(true);
@@ -126,6 +137,11 @@ public class PopUpImgShow extends PopupPanel{
 		bottomPanel.add(lImgComment, 20,20);
 
 
+		loading = "Loading...";
+		loadingLabel = new Label();
+		loadingLabel.setText(loading);
+		bottomPanel.add(loadingLabel, popUpSize/2,5);
+		
 		ap.add(bottomPanel, 1, popUpSize-40);
 
 		setWidget(ap);
@@ -139,6 +155,7 @@ public class PopUpImgShow extends PopupPanel{
 	 * Method to show the next image.
 	 */
 	public void nextImg(){
+		showLoadingProcess(false);
 		if(currentImg<(imgFile.length-1)){
 			currentImg++;
 			checkButtons(currentImg);
@@ -150,6 +167,7 @@ public class PopUpImgShow extends PopupPanel{
 	 * Method to show the previous image.
 	 */
 	public void previousImg(){
+		showLoadingProcess(false);
 		if(currentImg>0){
 			currentImg--;
 			checkButtons(currentImg);
@@ -193,6 +211,7 @@ public class PopUpImgShow extends PopupPanel{
 	 * get the image's size and the it's added to the popup panel.
 	 */
 	private void addImage(String imagePath){
+		showLoadingProcess(true);
 		img = new ImagePopUp(imagePath, this);
 		imgPanel.add(img, imgPanelSize, imgPanelSize);
 	}
@@ -212,8 +231,11 @@ public class PopUpImgShow extends PopupPanel{
 
 		lImgName.setText(imgName[currentImg]);
 		lImgComment.setText(imgComment[currentImg]);
+		showLoadingProcess(false);
 		clearImg();
 		imgPanel.add(img, (imgPanelSize-ix)/2, (imgPanelSize-iy)/2);
+		
+		getNextAndPrevious(currentImg);	// cache the next and previous pictures;
 	}
 
 	/**
@@ -239,6 +261,47 @@ public class PopUpImgShow extends PopupPanel{
 	 */
 	private void clearImg(){
 		imgPanel.clear();
+	}
+	
+	/**
+	 * This method shows the picture's loading process.
+	 */
+	private void showLoadingProcess(boolean show){
+		if(show){
+			// show the loading bar
+
+			ind = 1;
+			loadingLabel.setText(loading.substring(0, ind));
+			
+			t = new Timer() {
+			      @Override
+			      public void run() {
+			    	  if(ind<loading.length()){
+							ind++;
+						}
+						else{
+							ind=1;
+						}
+						loadingLabel.setText(loading.substring(0, ind));
+			      }
+			    };
+			    //t.schedule(500);
+			    t.scheduleRepeating(500);
+		}
+		else{
+			// hide the loading bar
+			t.cancel();
+			loadingLabel.setText("");
+		}
+	}
+	
+	/**
+	 * Cache the next and previous pictures to reduce the loading time. 
+	 * @param i picture id
+	 */
+	private void getNextAndPrevious(int i){
+		if(i<imgFile.length-1)imgCacheN = new Image(imgPath+imgFile[i+1]);
+		if(i>0)imgCacheP = new Image(imgPath+imgFile[i-1]);
 	}
 
 }

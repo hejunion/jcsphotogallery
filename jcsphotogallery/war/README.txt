@@ -14,11 +14,12 @@
  */
  
  
- CHANGE LOG
+ CHANGELOG
  Version 1.0.3
  - Add a loading progress; 
  - Cache the next and previous pictures for a faster loading;
- - Add auto play function.
+ - Add auto play function;
+ - Add icons instead buttons.
  
  
  Version 1.0.2

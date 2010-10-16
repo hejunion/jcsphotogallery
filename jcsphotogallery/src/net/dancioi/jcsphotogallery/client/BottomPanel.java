@@ -27,8 +27,8 @@ package net.dancioi.jcsphotogallery.client;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 
@@ -37,19 +37,20 @@ import com.google.gwt.user.client.ui.Label;
  * 
  * The application contains 3 panels (top, center, bottom).
  *  
- * @version 1.0 
+ * @version 1.1 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 public class BottomPanel extends AbsolutePanel{
 
 	String jcsPhotoGalleryLinkString;
 	Jcsphotogallery pg;
-	Button bLeft;		// button LEFT
-	Button bRight;		// button RIGHT
-	Button bUp;			// button BACK to ALBUMS
 	Label pageNr;		// page number label.
 	Label albumLabel;	// album label.
 
+	Image bLeft;
+	Image bRight;
+	Image bUp;
+	
 	public BottomPanel(Jcsphotogallery pg){
 		this.pg = pg;
 		addVersionNr();
@@ -70,24 +71,23 @@ public class BottomPanel extends AbsolutePanel{
 	 */
 	public void initialize(){
 		setSize("800px", "70px");
-		bLeft = new Button("Prev");		// PREVIOUS button
-		bLeft.setWidth("50px");
+		bLeft = new Image("ext/previous.gif");		// PREVIOUS button
 		bLeft.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				bLeftClicked();}} );
-		add(bLeft, 550, 10);
-		bRight = new Button("Next");	// NEXT button
-		bRight.setWidth("50px");
+		add(bLeft, 610, 5);
+		
+		bRight = new Image("ext/next.gif");	// NEXT button
 		bRight.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				bRightClicked();}} );
-		add(bRight, 630, 10);
-		bUp = new Button("Albums");		// BACK to albums
-		bUp.setWidth("60px");
+		add(bRight, 660, 5);
+		
+		bUp = new Image("ext/albums.gif");		// BACK to albums
 		bUp.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				bUpClicked();}} );
-		add(bUp, 737, 10);
+		add(bUp, 767, 5);
 
 		pageNr = new Label();
 		add(pageNr, 370, 10);
@@ -128,7 +128,7 @@ public class BottomPanel extends AbsolutePanel{
 	 * @param v boolean
 	 */
 	public void setBleftVisible(boolean v){
-		bLeft.setEnabled(v);
+		bLeft.setVisible(v);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class BottomPanel extends AbsolutePanel{
 	 * @param v boolean
 	 */
 	public void setBrightVisible(boolean v){
-		bRight.setEnabled(v);
+		bRight.setVisible(v);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class BottomPanel extends AbsolutePanel{
 	 * @param v boolean
 	 */
 	public void setBupVisible(boolean v){
-		bUp.setEnabled(v);
+		bUp.setVisible(v);
 	}
 
 	/**

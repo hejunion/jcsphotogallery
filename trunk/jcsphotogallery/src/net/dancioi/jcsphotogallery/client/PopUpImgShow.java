@@ -29,7 +29,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -38,7 +37,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
  * This class shows the selected image 
  * (from the center panel) on a PopUp panel.
  *  
- * @version 1.1 
+ * @version 1.2 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
@@ -58,10 +57,12 @@ public class PopUpImgShow extends PopupPanel{
 	int imgStart;				// image id from to start.
 	String imgPath; 			// images path
 	ImagePopUp img; 			// image which will be shown.
-	Button next;				// button NEXT
-	Button previous;			// button PREVIOUS
-	Button close;				// button CLOSE; also the popup disappears by clicking outside of it.
-
+	
+	Image next;
+	Image previous;
+	Image close;
+	
+	
 	Label lImgName;				// image name
 	Label lImgComment;			// image comment
 
@@ -78,9 +79,11 @@ public class PopUpImgShow extends PopupPanel{
 	Image imgCacheP;
 	
 	
-	Button play;				// button AUTO PLAY
+	//Button play;				// button AUTO PLAY
+	Image play;
 	boolean playFlag = true;
 	Timer tPlay;
+	Label playMode;
 	
 
 	public PopUpImgShow(int imgStart, String imgPath, String []imgFile, String []imgName,  String []imgComment){
@@ -112,49 +115,44 @@ public class PopUpImgShow extends PopupPanel{
 		imgPanel.setPixelSize(imgPanelSize, imgPanelSize);
 		ap.add(imgPanel, 20,1);
 		
-		play = new Button("Play");
-		play.setWidth("60px");
+		bottomPanel = new AbsolutePanel();
+		bottomPanel.setPixelSize(popUpSize, 50);
+		
+		next = new Image("ext/next.gif");
+		next.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(!playFlag){autoPlay(false);play.setUrl("ext/play.gif");playFlag = true;}
+				nextImg();}} );
+		bottomPanel.add(next, popUpSize-110, 5);
+		
+		previous = new Image("ext/previous.gif");
+		previous.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(!playFlag){autoPlay(false);play.setUrl("ext/play.gif");playFlag = true;}
+				previousImg();}} );
+		bottomPanel.add(previous, popUpSize-160, 5);
+		
+		close = new Image("ext/close.gif");
+		close.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				closeImg();}} );
+		bottomPanel.add(close, popUpSize-40, 5);	
+		
+		play = new Image("ext/play.gif");
 		play.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(playFlag){
 					autoPlay(true);
-					play.setText("Stop");
+					play.setUrl("ext/pause.gif");
 					playFlag = false;
 				}
 				else{
 					autoPlay(false);
-					play.setText("Play");
+					play.setUrl("ext/play.gif");
 					playFlag = true;
 				}
 				}} );
-		ap.add(play, popUpSize-60, popUpSize-80);
-		
-
-		bottomPanel = new AbsolutePanel();
-		bottomPanel.setPixelSize(popUpSize, 50);
-
-		next = new Button("Next");
-		next.setWidth("50px");		// if the size is not specified, the IE browser merges two button in one.
-		next.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				if(!playFlag){autoPlay(false);play.setText("Play");playFlag = true;}
-				nextImg();}} );
-		bottomPanel.add(next, popUpSize-160, 10);
-
-		previous = new Button("Prev");
-		previous.setWidth("50px");
-		previous.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				if(!playFlag){autoPlay(false);play.setText("Play");playFlag = true;}
-				previousImg();}} );
-		bottomPanel.add(previous, popUpSize-240, 10);
-
-		close = new Button("Close");
-		close.setWidth("60px");
-		close.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				closeImg();}} );
-		bottomPanel.add(close, popUpSize-60, 10);
+		bottomPanel.add(play, popUpSize-240, 5);
 
 		lImgName = new Label();
 		bottomPanel.add(lImgName, 20,0);
@@ -166,7 +164,10 @@ public class PopUpImgShow extends PopupPanel{
 		loading = "Loading...";
 		loadingLabel = new Label();
 		loadingLabel.setText(loading);
-		bottomPanel.add(loadingLabel, popUpSize/2,5);
+		bottomPanel.add(loadingLabel, popUpSize/2,2);
+		
+		playMode = new Label();
+		bottomPanel.add(playMode, popUpSize/2,22);
 		
 		ap.add(bottomPanel, 1, popUpSize-40);
 
@@ -207,12 +208,16 @@ public class PopUpImgShow extends PopupPanel{
 	 * @param id image id
 	 */
 	private void checkButtons(int id){
-		next.setEnabled(true);
-		previous.setEnabled(true);
-		if(id==(imgFile.length-1))next.setEnabled(false);
-		if(id==0) previous.setEnabled(false);
+		next.setVisible(true);
+		previous.setVisible(true);
+		if(id==(imgFile.length-1))next.setVisible(false);
+		if(id==0) previous.setVisible(false);
 	}
 
+
+	
+	
+	
 	/**
 	 * check if the image is first or the last.
 	 * disable the button according.
@@ -336,6 +341,7 @@ public class PopUpImgShow extends PopupPanel{
 	 */
 	private void autoPlay(boolean flag){
 		if(flag){	
+			playMode.setText("Auto Play Mode");
 			tPlay = new Timer() {
 			      @Override
 			      public void run() {
@@ -345,6 +351,7 @@ public class PopUpImgShow extends PopupPanel{
 			    tPlay.scheduleRepeating(10000);	// wait 10 seconds between pictures. 
 		}
 		else{
+			playMode.setText("");
 			tPlay.cancel();
 		}
 	}

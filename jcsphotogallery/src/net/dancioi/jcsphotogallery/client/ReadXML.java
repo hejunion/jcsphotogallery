@@ -51,7 +51,8 @@ public class ReadXML {
 
 	public ReadXML(Jcsphotogallery pg){
 		this.pg = pg;
-		getXML("../gallery/albums.xml", "gallery/");		// read the xml file where the albums parameters are.
+	// read the xml file where the albums parameters are.
+		getXML("gallery/albums.xml", "gallery/");
 	}
 
 	/**

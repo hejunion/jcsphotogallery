@@ -1,0 +1,40 @@
+/*
+JcsPhotoGallery project - http://www.dancioi.net/projects/jcsphotogallery
+*/
+
+.h1 {
+	font-family:Georgia;
+  	font-size: 2em;
+  	font-weight: bold;
+  	color: #777777;
+  	margin: 20px 0px 20px;
+  	text-align: center;
+}
+
+.bottomAlbumLabel {
+	font-weight: bold;
+}
+
+.gridCell-format {
+  	padding: 3px;
+  	background-image:url('ext/cellBackground.gif');
+}
+
+.gwt-PopupPanelGlass {
+	background-color: #000;
+  	z-index: 0;	
+  	border: 0px;
+}
+
+.handOver {
+    cursor                      :   hand;
+    cursor                      :   pointer;
+}
+
+.popUpPanel {
+	background-color: #C0C0C0;
+}
+
+.loginPassword {
+		
+}

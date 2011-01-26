@@ -135,7 +135,7 @@ public class Jcsphotogallery implements EntryPoint {
 	 * @param nr
 	 */
 	public void getAlbumNr(int nr){
-		String albumPath = "../gallery/"+albums.getAlbumFolderName(nr)+"/album.xml";
+		String albumPath = "gallery/"+albums.getAlbumFolderName(nr)+"/album.xml";
 		String imagesPath = "gallery/"+albums.getAlbumFolderName(nr)+"/";
 		readXml.getXML(albumPath, imagesPath);
 	}

@@ -24,6 +24,8 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
+import net.dancioi.webdav.client.WebdavClient;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -49,10 +51,16 @@ public class LoginPanel extends PopupPanel{
 	AbsolutePanel apLogin;
 	private int pw = 300; // popup width
 	private int ph = 150; // popup height
+	private JcsPhotoGalleryAdmin jpga;
+	private Label titleLabel;
+	private TextBox usernameText;
+	private PasswordTextBox passwordText;
 	
 	
-	public LoginPanel(){
+	public LoginPanel(JcsPhotoGalleryAdmin jpga){
+		this.jpga = jpga;
 		initialize();
+		show();
 	}
 	
 	
@@ -70,7 +78,7 @@ public class LoginPanel extends PopupPanel{
 		apLogin.setStyleName("popUpPanel");
 
 	
-		Label titleLabel = new Label("JcsPhotoGallery Admin Login");
+		titleLabel = new Label("JcsPhotoGallery Admin Login");
 		apLogin.add(titleLabel,50,10);
 		
 		Label usernameLabel = new Label("Username");
@@ -80,11 +88,11 @@ public class LoginPanel extends PopupPanel{
 		apLogin.add(passwordLabel,20,80);
 		
 		
-		TextBox usernameText = new TextBox();
+		usernameText = new TextBox();
 		usernameText.setWidth("170px");
 		apLogin.add(usernameText,100,50);
 		
-		PasswordTextBox passwordText = new PasswordTextBox();
+		passwordText = new PasswordTextBox();
 		passwordText.setWidth("170px");
 		apLogin.add(passwordText,100,80);
 		
@@ -92,7 +100,7 @@ public class LoginPanel extends PopupPanel{
 		Button loginButton = new Button("Login");
 		loginButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				// check login
+				connect();
 				;}} );
 		
 		apLogin.add(loginButton,245,120);
@@ -100,6 +108,26 @@ public class LoginPanel extends PopupPanel{
 		setPosition();
 		setWidget(apLogin);
 	}
+	
+	
+	private void connect(){
+		new WebdavClient(this, jpga.url, usernameText.getText(), passwordText.getText()).checkLogin();
+	}
+	
+	
+	public void returnRessult(boolean result){
+		if(result){
+			jpga.loginTrue();
+			this.setVisible(false);
+		}
+		else{
+			titleLabel.setText("Username or Password incorect");
+		}
+		
+	}
+	
+	
+	
 	
 	
 	

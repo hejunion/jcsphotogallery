@@ -1,5 +1,5 @@
 /*	
- * 	File    : JcsPhotoGalleryAdmin.java
+ * 	File    : Get.java
  * 
  * 	Copyright (C) 2011 Daniel Cioi <dan@dancioi.net>
  *                              
@@ -22,53 +22,48 @@
  * 
  */
 
-package net.dancioi.jcsphotogallery.admin;
-
+package net.dancioi.webdav.client;
 
 import com.google.gwt.user.client.Window;
 
-import net.dancioi.webdav.client.*;
-import net.dancioi.jcsphotogallery.client.*;
-
-
 /**
- * 		JcsPhotoGallery Admin application.
- * 
- * The Main class of this project :p
- * 
- * For details about this project see the following web pages:
- * http://www.dancioi.net/projects/jcsphotogallery/
- * http://code.google.com/p/jcsphotogallery/
- * 
- * For a demo of this project see the following web page:
- * http://www.dancioi.net/projects/jcsphotogallery/demo/
- * 
+ * 		Get the files & folders on a specific path.		
+ *  
  * @version 1.0 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
+public class Get extends WdHttpMethod{
 
-	private boolean login;
-	private int loginFail = 0;
-	public String url= "http://www.serverintest.com/webdav/gallery/";
 	
-	public void onModuleLoad() {
-		initialize();
-		checkUser();
+	private WebdavClient wdClient;
+	private boolean succesfull;
+	
+	
+	public Get(WebdavClient wdClient, String url, String username, String password){
+		super("GET", url, username, password);
+		this.wdClient = wdClient;
+		triggerEvent(succesfull);
 	}
 	
-	private void checkUser(){
-		LoginPanel loginDialog = new LoginPanel(this);
+
 	
-		
-	}
-		
-	public void loginTrue(){
-		Window.alert("Succesfully login");
+	private void triggerEvent(boolean evResult){
+		wdClient.isSuccess (evResult);
 	}
 	
 	
+	
+
+	@Override
+	public void getResults(String[] results) {
+		if(results[0]==null){
+			succesfull = true;
+			Window.alert("Result 1 ="+results[1]);
+		}
+	}
+	
+
 	
 
 }

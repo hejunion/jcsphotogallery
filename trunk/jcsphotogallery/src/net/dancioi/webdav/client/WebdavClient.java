@@ -24,7 +24,11 @@
 
 package net.dancioi.webdav.client;
 
+import net.dancioi.jcsphotogallery.admin.LoginPanel;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
+
 
 
 /**
@@ -38,12 +42,65 @@ import com.google.gwt.core.client.EntryPoint;
 
 public class WebdavClient implements EntryPoint{
 
+	private String url;
+	private String username;
+	private String password;
+	LoginPanel lp;
+	
+	public WebdavClient(){
+		
+	}
+	
+	
+	public WebdavClient(LoginPanel lp, String url, String username, String password){
+		this.lp = lp;
+		this.url = url;
+		this.username = username;
+		this.password = password;
+
+	}
+	
+	public void checkLogin(){
+		new Get(this, url, username, password);
+	}
+
+	
+	public void isSuccess(boolean resultCommand){
+		lp.returnRessult(resultCommand);
+		writeFolder("testtest");
+	}
+	
+	
+	public void writeFolder(String folder){
+		String urlMk = url+folder+"/";
+		boolean folderCreated = new Mkdir(urlMk, username, password).isSuccesfull();
+		if(folderCreated){
+			//Window.alert("Folder created");
+		}
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void onModuleLoad() {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
+	
+	
+	
 	
 	
 }

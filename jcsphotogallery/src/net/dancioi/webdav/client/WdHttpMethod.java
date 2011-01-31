@@ -41,44 +41,99 @@ import com.google.gwt.http.client.URL;
 
 public abstract class WdHttpMethod {
 
-	private String[] resultArray;
+	protected boolean connected = true;		// connected?
+	protected int statusCode; 						// status code
+	protected String responseText;					// response text
+	protected String responseStatus;					// response status
+
+	// see more at http://www.gwtapps.com/doc/html/com.google.gwt.http.client.html
+	
+	
 	
 	public WdHttpMethod(String command, String url, String username, String password){
-		resultArray = new String[4];
 		logOn(command, url, username, password);
 	}
-	
-	
-	public abstract void getResults(String[] results);
 
-	
-	public void logOn(String command, String url, String username, String password){
+
+	public abstract void getResults();
+
+	/**
+	 * Make HTTP request and process the associated response.
+	 * @param command GET, PUT, MKCOL, DELETE, PROPFIND
+	 * @param url
+	 * @param username
+	 * @param password
+	 */
+	protected void logOn(String command, String url, String username, String password){
 		RequestBuilderWebdav builder = new RequestBuilderWebdav(command, URL.encode(url));
-		
+
 		builder.setUser(username);
 		builder.setPassword(password);
-		
+
 		tryRequest(builder);
 	}
-	
-	private void tryRequest(RequestBuilderWebdav builder){
-		
+
+	protected void tryRequest(RequestBuilderWebdav builder){
+
 		try {
 			builder.sendRequest(null, new RequestCallback() {
-		    public void onError(Request request, Throwable exception) {
-		    	resultArray[0] = "error connection";
-		    }
+				public void onError(Request request, Throwable exception) {
+					setConnected(false); //"Could not connect to server."
+				}
 
-		    public void onResponseReceived(Request request, Response response) {
-		    	resultArray[1] = Integer.toString(response.getStatusCode());
-		    	resultArray[2] = response.getText();
-		    	resultArray[3] = response.getStatusText();
-		    }
-		  });
+				public void onResponseReceived(Request request, Response response) {
+					setStatusCode(response.getStatusCode());
+					setResponseText(response.getText());
+					setResponseStatus(response.getStatusText());
+					goNext();
+				}
+			});
 		} catch (RequestException e) {
-		  // do something with this.
+			// do something with this.
+			// failed to send the request
 		}
-		getResults(resultArray);
 	}
+
+	/**
+	 * Trigger the getResults method.
+	 */
+	protected void goNext(){
+		getResults();
+	}
+	
+
+	/**
+	 * Set connected.
+	 * @param b
+	 */
+	protected void setConnected(boolean b) {
+		connected = b;
+	}
+
+
+	/**
+	 * Set the response status text.
+	 * @param statusText
+	 */
+	protected void setResponseStatus(String statusText) {
+		responseStatus = statusText;
+	}
+
+	/**
+	 * Set the response text.
+	 * @param text
+	 */
+	protected void setResponseText(String text) {
+		responseText = text;
+	}
+
+	/**
+	 * Set the response status code.
+	 * @param stsCode
+	 */
+	protected void setStatusCode(int stsCode) {
+		statusCode = stsCode;
+	}
+	
 
 }

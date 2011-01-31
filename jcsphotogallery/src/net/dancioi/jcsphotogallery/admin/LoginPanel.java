@@ -24,8 +24,6 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
-import net.dancioi.webdav.client.WebdavClient;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -55,6 +53,7 @@ public class LoginPanel extends PopupPanel{
 	private Label titleLabel;
 	private TextBox usernameText;
 	private PasswordTextBox passwordText;
+	private int countFailLogins = 0;
 	
 	
 	public LoginPanel(JcsPhotoGalleryAdmin jpga){
@@ -111,17 +110,24 @@ public class LoginPanel extends PopupPanel{
 	
 	
 	private void connect(){
-		new WebdavClient(this, jpga.url, usernameText.getText(), passwordText.getText()).checkLogin();
+		returnRessult(jpga.connect(usernameText.getText(),passwordText.getText()));
 	}
 	
 	
-	public void returnRessult(boolean result){
+	private void returnRessult(boolean result){
 		if(result){
-			jpga.loginTrue();
+			jpga.setLogin(true);
 			this.setVisible(false);
 		}
 		else{
-			titleLabel.setText("Username or Password incorect");
+			if(countFailLogins<3){
+				countFailLogins++;
+				titleLabel.setText("Username or Password incorect");
+			}
+			else{
+				jpga.setLogin(false);
+				this.setVisible(false);
+			}
 		}
 		
 	}

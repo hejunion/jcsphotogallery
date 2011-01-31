@@ -26,6 +26,8 @@ package net.dancioi.webdav.client;
 
 import com.google.gwt.user.client.Window;
 
+
+
 /**
  * 		Create a folder.
  *  
@@ -34,33 +36,56 @@ import com.google.gwt.user.client.Window;
  */
 
 public class Mkdir extends WdHttpMethod{
-	
+
 	private boolean succesfull;
-	
-	
+
+	/**
+	 * Constructor. 
+	 * @param url
+	 * @param username
+	 * @param password
+	 */
 	public Mkdir(String url, String username, String password){
 		super("MKCOL", url, username, password);
 	}
-	
-	public boolean isSuccesfull(){
-		return succesfull;
-	}
-		
-		
 
-		@Override
-		public void getResults(String[] results) {
-			if(results[0]==null){
-				Window.alert("Mkdir Result 1 ="+results[1]);
-				//Window.alert("Mkdir Result 2 ="+results[2]);
-				//Window.alert("Mkdir Result 3 ="+results[3]);
-				if(results[3].contains("Created"))succesfull = true;
+
+	/**
+	 * Method that return if the folder was created.
+	 * @return
+	 * @throws CommandException
+	 */
+	public boolean isSuccesfull() throws CommandException{
+		if(succesfull)
+			return succesfull;
+		else throw new CommandException(statusCode,responseStatus);
+	}
+
+
+	/**
+	 * Method to get the answer from WebDAV server.
+	 */	
+	@Override
+	public void getResults() {
+		if(connected){	
+			//Window.alert("get here "+statusCode+"\n"+"response status = "+responseStatus+"\n responseText = "+responseText+"\n successfull="+succesfull);
+			if(201 == statusCode){
+				succesfull = true;
+			}
+			else{
+			//	throw new CommandException(statusCode,responseStatus);
 			}
 		}
-		
+		else{
+		//	throw new CommandException(0,"connection error");
+		}
+	}
+	
+	
+	
 
-		/* http://www.ietf.org/rfc/rfc2518.txt
-		 * Status Codes
+	/* http://www.ietf.org/rfc/rfc2518.txt
+	 * Status Codes
 
    201 (Created) - The collection or structured resource was created in
    its entirety.
@@ -83,6 +108,6 @@ public class Mkdir extends WdHttpMethod{
    space to record the state of the resource after the execution of this
    method.
 
-		 */
-	
+	 */
+
 }

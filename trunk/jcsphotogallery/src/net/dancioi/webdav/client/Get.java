@@ -24,7 +24,6 @@
 
 package net.dancioi.webdav.client;
 
-import com.google.gwt.user.client.Window;
 
 /**
  * 		Get the files & folders on a specific path.		
@@ -34,36 +33,88 @@ import com.google.gwt.user.client.Window;
  */
 
 public class Get extends WdHttpMethod{
+	private boolean successfully;
+	private String[] filesAndFolders;
+	private String[] files;
+	private String[] folders;
+	private CommandException commandException;
 
-	
-	private WebdavClient wdClient;
-	private boolean succesfull;
-	
-	
-	public Get(WebdavClient wdClient, String url, String username, String password){
+	/**
+	 * Constructor
+	 * @param url complete web address
+	 * @param username from login dialog
+	 * @param password from login dialog
+	 */
+	public Get(String url, String username, String password){
 		super("GET", url, username, password);
-		this.wdClient = wdClient;
-		triggerEvent(succesfull);
 	}
-	
 
-	
-	private void triggerEvent(boolean evResult){
-		wdClient.isSuccess (evResult);
+
+	/**
+	 * Method to get the files and folders from url provided in constructor.
+	 * @return an array with files and folders together.
+	 * @throws CommandException
+	 */
+	public String[] getFilesAndFolders() throws CommandException{
+		if(successfully)return filesAndFolders;
+		else throw commandException;
 	}
-	
-	
-	
 
+	/**
+	 * Method to get the files from url provided in constructor.
+	 * @return an array with files.
+	 * @throws CommandException
+	 */
+	public String[] getFiles() throws CommandException{
+		return files;
+	}
+
+	/**
+	 * Method to get the folders from url provided in constructor.
+	 * @return an array with folders.
+	 * @throws CommandException
+	 */
+	public String[] getFolders() throws CommandException{
+		return folders;
+	}
+
+
+	/**
+	 * Parse the xml in String objects. 
+	 * @param resultsToSelect the XML result
+	 */
+	private void selectFilesAndFolders(String resultsToSelect){
+
+	}
+
+
+	/**
+	 * Method to get the answer from WebDAV server.
+	 */
 	@Override
-	public void getResults(String[] results) {
-		if(results[0]==null){
-			succesfull = true;
-			Window.alert("Result 1 ="+results[1]);
+	public void getResults() {
+		if(connected){
+			if(200 == statusCode){
+				selectFilesAndFolders(responseText);
+				successfully = true;
+			}
+			else{
+				commandException = new CommandException(statusCode,responseStatus);
+			}
+		}
+		else{
+			commandException = new CommandException("connection error");
 		}
 	}
-	
 
-	
+	/**
+	 * If the command was successfully this will return true
+	 * @return boolean
+	 */
+	public boolean isSuccessfully(){
+		return successfully;
+	}
+
+
 
 }

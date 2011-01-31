@@ -50,8 +50,8 @@ import net.dancioi.jcsphotogallery.client.*;
 public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 
 	private boolean login;
-	private int loginFail = 0;
-	public String url= "http://www.serverintest.com/webdav/gallery/";
+	String url= "http://www.serverintest.com/webdav/gallery/";
+	WebdavClient wdc; 	// WebDAV Library
 	
 	public void onModuleLoad() {
 		initialize();
@@ -59,9 +59,18 @@ public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 	}
 	
 	private void checkUser(){
-		LoginPanel loginDialog = new LoginPanel(this);
+		new LoginPanel(this);
+	}
 	
-		
+	public boolean connect(String userName, String userPassword){
+		wdc = new WebdavClient(url,userName, userPassword);
+		boolean connected = wdc.checkLogin();
+		return connected;
+	}
+	
+	public void setLogin(boolean loginResult){
+		login = loginResult;
+		if(login)loginTrue();
 	}
 		
 	public void loginTrue(){

@@ -24,7 +24,6 @@
 
 package net.dancioi.webdav.client;
 
-import net.dancioi.jcsphotogallery.admin.LoginPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
@@ -36,7 +35,7 @@ import com.google.gwt.user.client.Window;
  *  
  *  Library client side to write (modify) the files on web server.  
  *  
- * @version 1.0 
+ * @version 1.1 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
@@ -45,62 +44,140 @@ public class WebdavClient implements EntryPoint{
 	private String url;
 	private String username;
 	private String password;
-	LoginPanel lp;
-	
+
+	/**
+	 * Default constructor.
+	 */
 	public WebdavClient(){
 		
 	}
-	
-	
-	public WebdavClient(LoginPanel lp, String url, String username, String password){
-		this.lp = lp;
+
+	/**
+	 * The constructor of WebDAV client library. 
+	 * @param url complete web address
+	 * @param username
+	 * @param password
+	 */
+	public WebdavClient(String url, String username, String password){
 		this.url = url;
 		this.username = username;
 		this.password = password;
 
 	}
-	
-	public void checkLogin(){
-		new Get(this, url, username, password);
-	}
 
-	
-	public void isSuccess(boolean resultCommand){
-		lp.returnRessult(resultCommand);
-		writeFolder("testtest");
-	}
-	
-	
-	public void writeFolder(String folder){
-		String urlMk = url+folder+"/";
-		boolean folderCreated = new Mkdir(urlMk, username, password).isSuccesfull();
-		if(folderCreated){
-			//Window.alert("Folder created");
+	/**
+	 * Method to check if username and password are valid.
+	 * @return boolean
+	 */
+	public boolean checkLogin(){
+		try {
+			//return checkServerAccess(url);
+			return writeFolder(url,"bbbt");
+		} catch (CommandException e) {
+			Window.alert("exception code="+e.getErrorCode()+" message="+e.getErrorMessage());
+			return false;
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Override
-	public void onModuleLoad() {
-		// TODO Auto-generated method stub
-		
+
+	/**
+	 * Method to get files and folders from a specific path.
+	 * @param path
+	 * @return String[]
+	 * @throws CommandException
+	 */
+	public String[] getFilesAndFolders(String path) throws CommandException{
+		return new Get(path, username, password).getFilesAndFolders();
+	}
+
+	/**
+	 * Method to return just the files from a specific path.
+	 * @param path
+	 * @return files
+	 * @throws CommandException
+	 */
+	public String[] getFiles(String path) throws CommandException{
+		return new Get(path, username, password).getFiles();
+	}
+
+	/**
+	 * Method to return just the folders from a specific path.
+	 * @param path
+	 * @return folders
+	 * @throws CommandException
+	 */
+	public String[] getFolders(String path) throws CommandException{
+		return new Get(path, username, password).getFolders();
+	}
+
+
+	/**
+	 * Method to check if access on the server (used here to check the login).
+	 * @param path
+	 * @return folders
+	 * @throws CommandException
+	 */
+	public boolean checkServerAccess(String path) throws CommandException{
+		return new Propfind(path, username, password).isSuccesfull();
 	}
 	
 	
-	
-	
-	
-	
-	
+	/**
+	 * Method to upload a file on the WebDAV server.
+	 * @param path
+	 * @param fileName
+	 * @throws CommandException
+	 */
+	public void puFile(String path, String fileName) throws CommandException{
+		String urlPut = path+fileName+"/";
+		new Put(urlPut, username, password).isSuccesfull();
+	}
+
+	/**
+	 * Method to create a folder at a specific path.
+	 * @param path
+	 * @param folder
+	 * @throws CommandException
+	 */
+	public boolean writeFolder(String path, String folder) throws CommandException{
+		String urlMk = path+folder+"/";
+		return new Mkdir(urlMk, username, password).isSuccesfull();
+	}
+
+	/**
+	 * Method to delete a folder and all his children.
+	 * @param path
+	 * @param folder
+	 * @throws CommandException
+	 */
+	public void DeleteFolder(String path, String folder) throws CommandException{
+		String urlDel = path+folder+"/";
+		new Delete(urlDel, username, password).isSuccesfull();
+	}
+
+	/**
+	 * Method to delete just a file.
+	 * @param path
+	 * @param file
+	 * @throws CommandException
+	 */
+	public void DeleteFile(String path, String file) throws CommandException{
+		String urlDel = path+file+"/";
+		new Delete(urlDel, username, password).isSuccesfull();
+	}
+
+
+
+
+
+
+
+
+
+
+	/** it's required to be in a GWT library */
+	@Override
+	public void onModuleLoad() {
+		// TODO Auto-generated method stub	
+	}
 }

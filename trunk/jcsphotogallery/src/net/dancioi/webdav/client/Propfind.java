@@ -1,5 +1,5 @@
 /*	
- * 	File    : Put.java
+ * 	File    : Propfind.java
  * 
  * 	Copyright (C) 2011 Daniel Cioi <dan@dancioi.net>
  *                              
@@ -21,17 +21,19 @@
  *  along with Jcsphotogallery.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-
 package net.dancioi.webdav.client;
 
+import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Window;
+
 /**
- * 		Put a file on WebDAV server.
+ * 		Get properties for a specific path (files and folders).
  *  
  * @version 1.0 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class Put extends WdHttpMethod{
+public class Propfind extends WdHttpMethod{
 
 	private boolean succesfull;
 	private CommandException commandException;
@@ -42,14 +44,16 @@ public class Put extends WdHttpMethod{
 	 * @param username
 	 * @param password
 	 */
-	public Put(String url, String username, String password){
-		super("PUT", url, username, password);
+	public Propfind(String url, String username, String password){
+		super("PROPFIND", url, username, password);
 	}
 
 
 	/**
-	 * Method that return if the file was successful added.
-	 * @return
+	 * Method retrieves properties defined on the files and folders
+	 * at a specific path.
+	 * 
+	 * @return boolean
 	 * @throws CommandException
 	 */
 	public boolean isSuccesfull() throws CommandException{
@@ -57,16 +61,41 @@ public class Put extends WdHttpMethod{
 			return succesfull;
 		else throw commandException;
 	}
+	
 
 
+	private void parseResult(String results){
+		Window.alert("Result \n"+results);
+	}
+	
+	
+	
+	
+	/**
+	 * Override the method to set the "Depth" parameter.
+	 */
+	protected void logOn(String command, String url, String username, String password){
+		RequestBuilderWebdav builder = new RequestBuilderWebdav(command, URL.encode(url));
+		builder.setHeader("Depth", "0");
+		builder.setUser(username);
+		builder.setPassword(password);
+		tryRequest(builder);
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * Method to get the answer from WebDAV server.
 	 */
 	@Override
 	public void getResults() {
 		if(connected){
-			if(204 == statusCode){
+			if(207 == statusCode){
 				succesfull = true;
+				parseResult(responseText);
 			}
 			else{
 				commandException = new CommandException(statusCode,responseStatus);
@@ -76,5 +105,8 @@ public class Put extends WdHttpMethod{
 			commandException = new CommandException("connection error");
 		}
 	}
-
+	
+//  207 Multi-Status	
+//	401 Authorization required
+//  403 Forbidden
 }

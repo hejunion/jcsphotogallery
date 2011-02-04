@@ -24,6 +24,7 @@
 
 package net.dancioi.webdav.client;
 
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
 
@@ -37,7 +38,7 @@ import com.google.gwt.user.client.Window;
 
 public class Mkdir extends WdHttpMethod{
 
-	private boolean succesfull;
+	private WebdavClientCommand wdcc;
 
 	/**
 	 * Constructor. 
@@ -45,20 +46,9 @@ public class Mkdir extends WdHttpMethod{
 	 * @param username
 	 * @param password
 	 */
-	public Mkdir(String url, String username, String password){
+	public Mkdir(WebdavClientCommand wdcc, String url, String username, String password){
 		super("MKCOL", url, username, password);
-	}
-
-
-	/**
-	 * Method that return if the folder was created.
-	 * @return
-	 * @throws CommandException
-	 */
-	public boolean isSuccesfull() throws CommandException{
-		if(succesfull)
-			return succesfull;
-		else throw new CommandException(statusCode,responseStatus);
+		this.wdcc = wdcc;
 	}
 
 
@@ -68,16 +58,15 @@ public class Mkdir extends WdHttpMethod{
 	@Override
 	public void getResults() {
 		if(connected){	
-			//Window.alert("get here "+statusCode+"\n"+"response status = "+responseStatus+"\n responseText = "+responseText+"\n successfull="+succesfull);
 			if(201 == statusCode){
-				succesfull = true;
+				wdcc.succesfull();
 			}
 			else{
-			//	throw new CommandException(statusCode,responseStatus);
+				wdcc.errorReturn(""+statusCode+", "+responseStatus );
 			}
 		}
 		else{
-		//	throw new CommandException(0,"connection error");
+			wdcc.errorReturn("0, connection error");
 		}
 	}
 	

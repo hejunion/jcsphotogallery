@@ -51,7 +51,8 @@ public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 
 	private boolean login;
 	String url= "http://www.serverintest.com/webdav/gallery/";
-	WebdavClient wdc; 	// WebDAV Library
+	public WebdavClient webdavLib;
+
 	
 	public void onModuleLoad() {
 		initialize();
@@ -62,11 +63,12 @@ public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 		new LoginPanel(this);
 	}
 	
-	public boolean connect(String userName, String userPassword){
-		wdc = new WebdavClient(url,userName, userPassword);
-		boolean connected = wdc.checkLogin();
-		return connected;
+
+	public void initializeWebDavLibrary(String validUsername, String validPassword){
+		webdavLib = new WebdavClient(url, validUsername, validPassword);
 	}
+	
+	
 	
 	public void setLogin(boolean loginResult){
 		login = loginResult;
@@ -74,7 +76,7 @@ public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 	}
 		
 	public void loginTrue(){
-		Window.alert("Succesfully login");
+		//Window.alert("Succesfully login");
 	}
 	
 	

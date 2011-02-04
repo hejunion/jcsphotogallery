@@ -38,3 +38,7 @@ JcsPhotoGallery project - http://www.dancioi.net/projects/jcsphotogallery
 .loginPassword {
 		
 }
+
+.wrongUser{
+	color:red;
+}

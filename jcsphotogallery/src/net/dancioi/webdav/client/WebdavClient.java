@@ -65,20 +65,19 @@ public class WebdavClient implements EntryPoint{
 
 	}
 
-	/**
-	 * Method to check if username and password are valid.
-	 * @return boolean
-	 */
-	public boolean checkLogin(){
-		try {
-			//return checkServerAccess(url);
-			return writeFolder(url,"bbbt");
-		} catch (CommandException e) {
-			Window.alert("exception code="+e.getErrorCode()+" message="+e.getErrorMessage());
-			return false;
-		}
-	}
 
+	
+	public void propFind(WebdavClientCommand wdcc, String path){
+		String urlProp = url;
+		if(path.startsWith(".")){
+			// do nothing
+		}
+		else{
+			urlProp = urlProp+path+"/";
+		}
+		new Propfind(wdcc, urlProp, username, password);
+	}
+	
 
 	/**
 	 * Method to get files and folders from a specific path.
@@ -111,16 +110,6 @@ public class WebdavClient implements EntryPoint{
 	}
 
 
-	/**
-	 * Method to check if access on the server (used here to check the login).
-	 * @param path
-	 * @return folders
-	 * @throws CommandException
-	 */
-	public boolean checkServerAccess(String path) throws CommandException{
-		return new Propfind(path, username, password).isSuccesfull();
-	}
-	
 	
 	/**
 	 * Method to upload a file on the WebDAV server.
@@ -139,11 +128,13 @@ public class WebdavClient implements EntryPoint{
 	 * @param folder
 	 * @throws CommandException
 	 */
-	public boolean writeFolder(String path, String folder) throws CommandException{
-		String urlMk = path+folder+"/";
-		return new Mkdir(urlMk, username, password).isSuccesfull();
-	}
 
+	public void writeFolder(WebdavClientCommand wdcc, String folder){
+		String urlMk = url+folder+"/";
+		new Mkdir(wdcc, urlMk, username, password);
+	}
+	
+	
 	/**
 	 * Method to delete a folder and all his children.
 	 * @param path

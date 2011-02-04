@@ -24,6 +24,9 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
+import net.dancioi.webdav.client.WebdavClient;
+import net.dancioi.webdav.client.WebdavClientCommand;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -44,7 +47,7 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 
 
-public class LoginPanel extends PopupPanel{
+public class LoginPanel extends PopupPanel implements WebdavClientCommand{
 	
 	AbsolutePanel apLogin;
 	private int pw = 300; // popup width
@@ -110,7 +113,9 @@ public class LoginPanel extends PopupPanel{
 	
 	
 	private void connect(){
-		returnRessult(jpga.connect(usernameText.getText(),passwordText.getText()));
+		//new WebdavClient(jpga.url, usernameText.getText(),passwordText.getText()).writeFolder(this, "blabla");
+		// Propfind to check the username, password and web address.
+		new WebdavClient(jpga.url, usernameText.getText(),passwordText.getText()).propFind(this, ".");
 	}
 	
 	
@@ -122,6 +127,7 @@ public class LoginPanel extends PopupPanel{
 		else{
 			if(countFailLogins<3){
 				countFailLogins++;
+				titleLabel.addStyleName("wrongUser");
 				titleLabel.setText("Username or Password incorect");
 			}
 			else{
@@ -142,6 +148,21 @@ public class LoginPanel extends PopupPanel{
 	 */
 	private void setPosition(){		
 		setPopupPosition((Window.getClientWidth()-pw)/2,(Window.getClientHeight()-ph)/2); 
+	}
+
+
+
+	@Override
+	public void succesfull() {
+		returnRessult(true);
+		jpga.initializeWebDavLibrary(usernameText.getText(),passwordText.getText());
+	}
+
+
+
+	@Override
+	public void errorReturn(String result) {
+		returnRessult(false);
 	}
 
 	

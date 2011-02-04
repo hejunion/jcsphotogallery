@@ -35,8 +35,7 @@ import com.google.gwt.user.client.Window;
 
 public class Propfind extends WdHttpMethod{
 
-	private boolean succesfull;
-	private CommandException commandException;
+	private WebdavClientCommand wdcc;
 
 	/**
 	 * Constructor. 
@@ -44,28 +43,17 @@ public class Propfind extends WdHttpMethod{
 	 * @param username
 	 * @param password
 	 */
-	public Propfind(String url, String username, String password){
+	public Propfind(WebdavClientCommand wdcc, String url, String username, String password){
 		super("PROPFIND", url, username, password);
+		this.wdcc = wdcc;
 	}
 
 
-	/**
-	 * Method retrieves properties defined on the files and folders
-	 * at a specific path.
-	 * 
-	 * @return boolean
-	 * @throws CommandException
-	 */
-	public boolean isSuccesfull() throws CommandException{
-		if(succesfull)
-			return succesfull;
-		else throw commandException;
-	}
 	
 
 
 	private void parseResult(String results){
-		Window.alert("Result \n"+results);
+		//Window.alert("Result \n"+results);
 	}
 	
 	
@@ -94,15 +82,15 @@ public class Propfind extends WdHttpMethod{
 	public void getResults() {
 		if(connected){
 			if(207 == statusCode){
-				succesfull = true;
+				wdcc.succesfull();
 				parseResult(responseText);
 			}
 			else{
-				commandException = new CommandException(statusCode,responseStatus);
+				wdcc.errorReturn(""+statusCode+", "+responseStatus );
 			}
 		}
 		else{
-			commandException = new CommandException("connection error");
+			wdcc.errorReturn("0, connection error");
 		}
 	}
 	

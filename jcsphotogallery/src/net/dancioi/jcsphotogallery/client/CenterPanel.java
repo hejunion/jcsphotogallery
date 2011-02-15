@@ -251,7 +251,6 @@ public class CenterPanel extends Grid{
 	 */
 	public void popupImg(int id){
 		if(pg.albumsFlag){
-			pg.albumsFlag = false;
 			resetCount();
 			pg.getAlbumNr(getID(id)-1);
 			pg.bottomPanel.setAlbumLabel(pg.albums.getAlbumName(getID(id)-1));

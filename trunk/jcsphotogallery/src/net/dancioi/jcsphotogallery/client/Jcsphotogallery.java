@@ -48,9 +48,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class Jcsphotogallery implements EntryPoint {
 
-	//TODO add autoplay on popUpPanel.
 	
-	public String galleryVersion = "1.0.3";
+	public String galleryVersion = "1.0.4";
 
 	Label header;
 

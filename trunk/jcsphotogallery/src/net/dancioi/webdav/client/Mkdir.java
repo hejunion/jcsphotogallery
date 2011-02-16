@@ -24,8 +24,6 @@
 
 package net.dancioi.webdav.client;
 
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 
 
 

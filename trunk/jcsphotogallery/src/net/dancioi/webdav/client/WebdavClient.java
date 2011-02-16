@@ -117,9 +117,9 @@ public class WebdavClient implements EntryPoint{
 	 * @param fileName
 	 * @throws CommandException
 	 */
-	public void puFile(String path, String fileName) throws CommandException{
+	public void puFile(String path, String fileName, String content) throws CommandException{
 		String urlPut = path+fileName+"/";
-		new Put(urlPut, username, password).isSuccesfull();
+		new Put(urlPut, username, password, content).isSuccesfull();
 	}
 
 	/**

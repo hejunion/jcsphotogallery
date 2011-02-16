@@ -133,7 +133,8 @@ public class ReadXML {
 			NodeList albums = element.getElementsByTagName("album");
 			int albumsCount = albums.getLength();
 
-			pg.albums = new Albums(albumsCount);
+			//pg.albums = new Albums(albumsCount);
+			pg.initializeAlbums();
 
 			for (int i = 0; i < albums.getLength(); i++) {
 				Element elAlbum = (Element) albums.item(i);

@@ -51,6 +51,8 @@ public class BottomPanel extends AbsolutePanel{
 	Image bRight;
 	Image bUp;
 	
+	String adminLink = "<div> <a href=\"JcsphotogalleryAdmin.html\"><font size=\"1\">Admin</font></a> </div>";
+	
 	public BottomPanel(Jcsphotogallery pg){
 		this.pg = pg;
 		addVersionNr();
@@ -99,9 +101,13 @@ public class BottomPanel extends AbsolutePanel{
 		HTML jcsPhotoGalleryLink = new HTML(jcsPhotoGalleryLinkString);
 		add(jcsPhotoGalleryLink, 350, 40);
 
+		//HTML adminHtmlLink = new HTML(adminLink);
+		//add(adminHtmlLink, 375, 60);
+		
 		allOff();
 	}
-
+	
+	
 	/**
 	 * Method to handle PREVIOUS button.
 	 */

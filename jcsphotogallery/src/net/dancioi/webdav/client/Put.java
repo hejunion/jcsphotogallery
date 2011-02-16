@@ -24,6 +24,12 @@
 
 package net.dancioi.webdav.client;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
+
 /**
  * 		Put a file on WebDAV server.
  *  
@@ -31,10 +37,11 @@ package net.dancioi.webdav.client;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class Put extends WdHttpMethod{
+public class Put{
 
 	private boolean succesfull;
 	private CommandException commandException;
+	private String dataContent, url, username, password;
 
 	/**
 	 * Constructor. 
@@ -42,8 +49,12 @@ public class Put extends WdHttpMethod{
 	 * @param username
 	 * @param password
 	 */
-	public Put(String url, String username, String password){
-		super("PUT", url, username, password);
+	public Put(String url, String username, String password, String dataContent){
+		this.url = url;
+		this.username = username;
+		this.password = password;
+		this.dataContent = dataContent;
+		execute();
 	}
 
 
@@ -58,23 +69,40 @@ public class Put extends WdHttpMethod{
 		else throw commandException;
 	}
 
+	private void execute(){
+		RequestBuilderWebdav builder = new RequestBuilderWebdav("PUT", URL.encode(url));
 
-	/**
-	 * Method to get the answer from WebDAV server.
-	 */
-	@Override
-	public void getResults() {
-		if(connected){
-			if(204 == statusCode){
-				succesfull = true;
-			}
-			else{
-				commandException = new CommandException(statusCode,responseStatus);
-			}
-		}
-		else{
-			commandException = new CommandException("connection error");
+		builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+		builder.setUser(username);
+		builder.setPassword(password);
+
+		tryRequest(builder);
+	}	
+
+
+	protected void tryRequest(RequestBuilderWebdav builder){
+		try {
+			builder.sendRequest(dataContent, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					//setConnected(false); //"Could not connect to server."
+				}
+
+				public void onResponseReceived(Request request, Response response) {
+					if (201 == response.getStatusCode()) {
+						
+					}
+					else{
+						commandException = new CommandException(response.getStatusCode(),response.getStatusText());
+					}
+				}
+			});
+		} catch (RequestException e) {
+			// do something with this.
+			// failed to send the request
 		}
 	}
+
+	
+
 
 }

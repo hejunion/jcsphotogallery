@@ -49,14 +49,14 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class Jcsphotogallery implements EntryPoint {
 
 	
-	public String galleryVersion = "1.0.4";
+	public String galleryVersion = "1.0.5";
 
 	Label header;
 
 	String galleryName;
 	String nameHomePage;
 
-	Albums albums;
+	protected Albums albums;
 
 	CenterPanel center;
 
@@ -64,7 +64,7 @@ public class Jcsphotogallery implements EntryPoint {
 	String homeLink = "";
 	BottomPanel bottomPanel;
 
-	ReadXML readXml;
+	protected ReadXML readXml;
 	boolean albumsFlag = true;
 
 	SortAlbums sA;
@@ -179,4 +179,12 @@ public class Jcsphotogallery implements EntryPoint {
 			backToAlbums();
 	}
 
+	
+	/**
+	 * Method to initialize the Albums.
+	 */
+	public void initializeAlbums(){
+		albums = new Albums();
+	}
+	
 }

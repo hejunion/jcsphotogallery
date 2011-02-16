@@ -26,6 +26,7 @@ package net.dancioi.jcsphotogallery.admin;
 
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootPanel;
 
 import net.dancioi.webdav.client.*;
 import net.dancioi.jcsphotogallery.client.*;
@@ -81,5 +82,33 @@ public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 	
 	
 	
+	@Override
+	public void initializeAlbums(){
+		albums = new AlbumsAdmin();
+	}
 
+	
+	/**
+	 * Method to get the selected album parameters.
+	 * @param nr
+	 */
+	@Override
+	public void getAlbumNr(int nr){
+		if(nr == albums.getAllAlbumsNr()-1){
+			showAddAlbumDialog();
+		}
+		else{
+			String albumPath = "gallery/"+albums.getAlbumFolderName(nr)+"/album.xml";
+			String imagesPath = "gallery/"+albums.getAlbumFolderName(nr)+"/";
+			readXml.getXML(albumPath, imagesPath);
+		}
+	}
+	
+	
+	private void showAddAlbumDialog(){
+		//Window.alert("show add album");
+		new AddAlbumDialog().show();
+	
+	}
+	
 }

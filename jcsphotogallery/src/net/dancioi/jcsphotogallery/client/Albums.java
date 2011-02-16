@@ -24,38 +24,34 @@
 
 package net.dancioi.jcsphotogallery.client;
 
+import java.util.ArrayList;
+
 
 /**
  * The class to keep the albums data.
  *  
- * @version 1.0 
+ * @version 1.1 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 public class Albums {
-
-	int nrAlbums;					// how many albums there are to know the array size.
-	String []album;					// array with albums strings.
-	String []albumFolderName;		// folder name for each album.
-	String []albumName;				// album name.
-	String []albumCat1;				// album category; first sort criteria.
-	String []albumCat2;				// album category; second sort criteria.
-
+	
+	ArrayList<String> album = new ArrayList<String>();					// array with albums strings.
+	ArrayList<String> albumFolderName = new ArrayList<String>();		// folder name for each album.
+	ArrayList<String> albumName = new ArrayList<String>();				// album name.
+	ArrayList<String> albumCat1 = new ArrayList<String>();				// album category; first sort criteria.
+	ArrayList<String> albumCat2 = new ArrayList<String>();				// album category; second sort criteria.
+	
+	
 
 	int nrAlbumsV;					
 	String []albumV;				// albums strings (visible).
 	String []albumFolderNameV;		// folder name for each album visible).
 	String []albumNameV;			// album name visible). 
-
-
-	public Albums(int albumsCount){
-		nrAlbums = albumsCount;
-		album = new String[albumsCount];
-		albumFolderName = new String[albumsCount];
-		albumName = new String[albumsCount];
-		albumCat1 = new String[albumsCount];
-		albumCat2 = new String[albumsCount];
+	
+	public Albums(){
+		
 	}
-
+	
 
 	/**
 	 * Show sorted albums.
@@ -74,9 +70,9 @@ public class Albums {
 		int in=0;
 		for(int i=0;i<visible.length;i++){
 			if(visible[i]){
-				albumS[in] = album[i];
-				albumFolderNameS[in] = albumFolderName[i];
-				albumNameS[in] = albumName[i];
+				albumS[in] = album.get(i);
+				albumFolderNameS[in] = albumFolderName.get(i);
+				albumNameS[in] = albumName.get(i);
 				in++;
 			}
 		}
@@ -90,30 +86,40 @@ public class Albums {
 	 * Show all albums.
 	 */
 	public void showAll(){
-		nrAlbumsV = nrAlbums;
-		albumV = album;
-		albumFolderNameV = albumFolderName;
-		albumNameV = albumName;
+		setVisibleAlbums();
 	}
 
+	protected void setVisibleAlbums(){
+		nrAlbumsV = album.size();
+		albumV = new String[nrAlbumsV];
+		album.toArray(albumV);
+		albumFolderNameV = new String[nrAlbumsV];
+		albumFolderName.toArray(albumFolderNameV);
+		albumNameV = new String[nrAlbumsV];
+		albumName.toArray(albumNameV);
+	}
+	
+	
+	//public void addAlbum
+	
 	public void addAlbum(int i, String val){
-		album[i]= val;
+		album.add(val);
 	}
 
 	public void addAlbumFolderName(int i, String val){
-		albumFolderName[i]= val;
+		albumFolderName.add(val);
 	}
 
 	public void addAlbumName(int i, String val){
-		albumName[i]= val;
+		albumName.add(val);
 	}
 
 	public void addAlbumCat1(int i, String val){
-		albumCat1[i]= val;
+		albumCat1.add(val);
 	}
 
 	public void addAlbumCat2(int i, String val){
-		albumCat2[i]= val;
+		albumCat2.add(val);
 	}
 
 	public String[] getAlbum(){
@@ -137,15 +143,24 @@ public class Albums {
 	}
 
 	public String[] getAlbumCat1(){
-		return albumCat1;
+		return (String[]) albumCat1.toArray();
 	}
 
 	public String[] getAlbumCat2(){
-		return albumCat2;
+		return (String[]) albumCat2.toArray();
 	}
 
 	public int getNrAlbums(){
 		return nrAlbumsV;
 	}
+	
+	/**
+	 * Method to get the number of all albums in gallery.
+	 * @return number of all albums.
+	 */
+	public int getAllAlbumsNr(){
+		return album.size();
+	}
+	
 
 }

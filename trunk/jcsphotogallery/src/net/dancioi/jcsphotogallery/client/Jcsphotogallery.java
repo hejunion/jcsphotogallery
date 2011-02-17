@@ -58,11 +58,11 @@ public class Jcsphotogallery implements EntryPoint {
 
 	protected Albums albums;
 
-	CenterPanel center;
+	protected CenterPanel center;
 
 	TopPanel topPanel;
 	String homeLink = "";
-	BottomPanel bottomPanel;
+	protected BottomPanel bottomPanel;
 
 	protected ReadXML readXml;
 	boolean albumsFlag = true;
@@ -99,7 +99,7 @@ public class Jcsphotogallery implements EntryPoint {
 	/**
 	 * Method to add the center panel.
 	 */
-	private void addCenterPanel(){
+	protected void addCenterPanel(){
 		center = new CenterPanel(this);
 		RootPanel.get("images").add(center); 
 	}
@@ -116,7 +116,7 @@ public class Jcsphotogallery implements EntryPoint {
 	/**
 	 * Method to add the bottom panel.
 	 */
-	private void addBottomPanel(){
+	protected void addBottomPanel(){
 		bottomPanel = new BottomPanel(this);
 		RootPanel.get("bottomPanel").add(bottomPanel);
 	}

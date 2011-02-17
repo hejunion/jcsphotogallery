@@ -24,6 +24,8 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
+import net.dancioi.jcsphotogallery.client.PopupGeneric;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -34,7 +36,6 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 
@@ -45,7 +46,7 @@ import com.google.gwt.user.client.ui.TextBox;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class AddAlbumDialog  extends PopupPanel{
+public class AddAlbumDialog  extends PopupGeneric{
 
 	FormPanel fp = new FormPanel();
 	
@@ -54,6 +55,7 @@ public class AddAlbumDialog  extends PopupPanel{
 	FileUpload upload;
 	
 	public AddAlbumDialog(){
+		super(300, 400);
 		initialize();
 	}
 	
@@ -62,15 +64,15 @@ public class AddAlbumDialog  extends PopupPanel{
 	 * Initialize
 	 */
 	private void initialize(){
-//		setGlassStyleName("gwt-PopupPanelGlass");
-//		setGlassEnabled(true); 
+		setGlassStyleName("gwt-PopupPanelGlass");
+		setGlassEnabled(true); 
 		
 //		fp.setAction("/gallery");
 		
 		fp.setEncoding(FormPanel.ENCODING_MULTIPART);
 		fp.setMethod(FormPanel.METHOD_POST);
 		
-		//setPosition();
+		setPosition();
 
 		apAddAlbum = new AbsolutePanel();
 		apAddAlbum.setPixelSize(300, 400);	

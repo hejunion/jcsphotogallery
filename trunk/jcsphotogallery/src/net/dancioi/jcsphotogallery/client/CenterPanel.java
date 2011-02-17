@@ -43,17 +43,17 @@ import com.google.gwt.user.client.ui.Image;
 public class CenterPanel extends Grid{
 
 	Jcsphotogallery pg;
-	int imgId = 0;
-	int cellID = 0;
-	Image []cell = new Image[9];	// 3x3 matrix.
-	boolean []cellOn = new boolean[9];	// flag to know which cells have images attached
-	int imgCountLimit = 9;
-	int imgCount;					// how many albums there are to know the size of  the array.
-	String []img;					// array with albums strings.
-	String []imgName;				// album name.
-	String []imgP;					// image full size, show on popup.
-	String []imgComment;			// image comment.
-	String imgPath;
+	protected int imgId = 0;
+	protected int cellID = 0;
+	protected Image []cell = new Image[9];	// 3x3 matrix.
+	protected boolean []cellOn = new boolean[9];	// flag to know which cells have images attached
+	protected int imgCountLimit = 9;
+	protected int imgCount;					// how many albums there are to know the size of  the array.
+	protected String []img;					// array with albums strings.
+	protected String []imgName;				// album name.
+	protected String []imgP;					// image full size, show on popup.
+	protected String []imgComment;			// image comment.
+	protected String imgPath;
 	int page = 1;					// current page.
 	int pages;						// numbers of pages.
 
@@ -176,7 +176,7 @@ public class CenterPanel extends Grid{
 	/**
 	 * add the image to the table.
 	 */
-	private void showImg(String imagesPath){
+	protected void showImg(String imagesPath){
 		cellID = 0;
 		for(int h=0;h<3;h++){
 			for(int w=0;w<3;w++){
@@ -256,8 +256,16 @@ public class CenterPanel extends Grid{
 			pg.bottomPanel.setAlbumLabel(pg.albums.getAlbumName(getID(id)-1));
 		}
 		else{
-			new PopUpImgShow(getID(id)-1, imgPath, imgP, imgName, imgComment).show();
+			showPopUpImg(getID(id));
 		}
+	}
+	
+	/**
+	 * Method that shows the popUp with the selected image.
+	 * @param id
+	 */
+	protected void showPopUpImg(int id){
+		new PopUpImgShow(id-1, imgPath, imgP, imgName, imgComment).show();
 	}
 
 	/**

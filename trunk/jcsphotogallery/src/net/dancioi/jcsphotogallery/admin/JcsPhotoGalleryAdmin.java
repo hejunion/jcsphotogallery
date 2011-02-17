@@ -60,6 +60,25 @@ public class JcsPhotoGalleryAdmin extends Jcsphotogallery{
 		checkUser();
 	}
 	
+	
+	/**
+	 * Method to add the center panel.
+	 */
+	protected void addCenterPanel(){
+		center = new CenterPanelAdmin(this);
+		RootPanel.get("images").add(center); 
+	}
+	
+	
+	/**
+	 * Method to add the bottom panel.
+	 */
+	protected void addBottomPanel(){
+		bottomPanel = new BottomPanelAdmin(this);
+		RootPanel.get("bottomPanel").add(bottomPanel);
+	}
+	
+	
 	private void checkUser(){
 		new LoginPanel(this);
 	}

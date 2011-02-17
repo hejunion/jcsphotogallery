@@ -27,11 +27,9 @@ package net.dancioi.jcsphotogallery.client;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
  * This class shows the selected image 
@@ -41,11 +39,10 @@ import com.google.gwt.user.client.ui.PopupPanel;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class PopUpImgShow extends PopupPanel{
+public class PopUpImgShow extends PopupGeneric{
 
+//TODO set the autoplay time from a xml file.
 	AbsolutePanel ap;
-	int wW;
-	int wH;
 	int popUpSize;
 	AbsolutePanel imgPanel;
 	int imgPanelSize;
@@ -87,7 +84,7 @@ public class PopUpImgShow extends PopupPanel{
 	
 
 	public PopUpImgShow(int imgStart, String imgPath, String []imgFile, String []imgName,  String []imgComment){
-		super(true);
+		super();
 		this.imgStart = imgStart;
 		this.imgPath = imgPath;
 		this.imgName = imgName;
@@ -104,6 +101,8 @@ public class PopUpImgShow extends PopupPanel{
 		setGlassStyleName("gwt-PopupPanelGlass");
 		setGlassEnabled(true); 
 
+		getMaximSquareSize();
+		
 		setPosition();
 
 		ap = new AbsolutePanel();
@@ -269,24 +268,18 @@ public class PopUpImgShow extends PopupPanel{
 		getNextAndPrevious(currentImg);	// cache the next and previous pictures;
 	}
 
+
 	/**
-	 * Method to set the popup panel position.
+	 * Method to get the maxim popup size. The dimension should be the same (square).
 	 */
-	private void setPosition(){		
+	private void getMaximSquareSize(){
 		getWindowSize();
-		setPopupPosition((wW-popUpSize)/2,(wH-popUpSize)/2); 
-	}
-
-	/**
-	 * Method to get the visible browser window's size.
-	 */
-	private void getWindowSize(){
-		wW = Window.getClientWidth();
-		wH = Window.getClientHeight();
-		popUpSize = wW <= wH ? wW:wH;
+		popUpSize = getBrowserWindowWidth() <= getBrowserWindowHeight() ? getBrowserWindowWidth():getBrowserWindowHeight();
 		popUpSize = popUpSize -40;	// let some margin.
+		setSizeX(popUpSize);
+		setSizeY(popUpSize);
 	}
-
+	
 	/**
 	 * Method to clear the old image before add the new one.
 	 */

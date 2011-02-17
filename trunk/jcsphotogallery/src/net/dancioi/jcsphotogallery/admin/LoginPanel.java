@@ -24,17 +24,16 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
+import net.dancioi.jcsphotogallery.client.PopupGeneric;
 import net.dancioi.webdav.client.WebdavClient;
 import net.dancioi.webdav.client.WebdavClientCommand;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 
@@ -47,7 +46,7 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 
 
-public class LoginPanel extends PopupPanel implements WebdavClientCommand{
+public class LoginPanel extends PopupGeneric implements WebdavClientCommand{
 	
 	AbsolutePanel apLogin;
 	private int pw = 300; // popup width
@@ -60,6 +59,7 @@ public class LoginPanel extends PopupPanel implements WebdavClientCommand{
 	
 	
 	public LoginPanel(JcsPhotoGalleryAdmin jpga){
+		super(300, 150);
 		this.jpga = jpga;
 		initialize();
 		show();
@@ -138,17 +138,6 @@ public class LoginPanel extends PopupPanel implements WebdavClientCommand{
 		
 	}
 	
-	
-	
-	
-	
-	
-	/**
-	 * Method to set the popup panel position.
-	 */
-	private void setPosition(){		
-		setPopupPosition((Window.getClientWidth()-pw)/2,(Window.getClientHeight()-ph)/2); 
-	}
 
 
 

@@ -94,9 +94,7 @@ public class BottomPanel extends AbsolutePanel{
 		pageNr = new Label();
 		add(pageNr, 370, 10);
 
-		albumLabel = new Label("");
-		albumLabel.setStyleName("bottomAlbumLabel");
-		add(albumLabel, 1,10);
+		addAlbumLabel();
 
 		HTML jcsPhotoGalleryLink = new HTML(jcsPhotoGalleryLinkString);
 		add(jcsPhotoGalleryLink, 350, 40);
@@ -105,6 +103,15 @@ public class BottomPanel extends AbsolutePanel{
 		//add(adminHtmlLink, 375, 60);
 		
 		allOff();
+	}
+	
+	/**
+	 * Method to add the album label.
+	 */
+	protected void addAlbumLabel(){
+		albumLabel = new Label("");
+		albumLabel.setStyleName("bottomAlbumLabel");
+		add(albumLabel, 1,10);
 	}
 	
 	

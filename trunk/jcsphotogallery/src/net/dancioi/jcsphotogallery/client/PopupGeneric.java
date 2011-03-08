@@ -121,4 +121,7 @@ public class PopupGeneric extends PopupPanel{
 	protected int getBrowserWindowHeight(){
 		return browserWindowH;
 	}
+	
+
+
 }

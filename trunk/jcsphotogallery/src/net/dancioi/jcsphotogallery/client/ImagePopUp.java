@@ -30,13 +30,14 @@ import com.google.gwt.user.client.ui.Image;
 /**
  * The image class to generate a event when the image is fully loaded.
  *  
- * @version 1.0 
+ * @version 1.1 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
 public class ImagePopUp extends Image{
 
 	PopUpImgShow pi;
+	private boolean loaded;
 
 	public ImagePopUp(String link, PopUpImgShow pi){
 		super(link);
@@ -46,8 +47,12 @@ public class ImagePopUp extends Image{
 	/**
 	 * When the image is fully loaded a event is fired.
 	 */
+	/*
+	 * The ONLOAD event is fired few times per second, so a flag is required.
+	 */
 	public void onBrowserEvent(Event event) {
-		if (event.getTypeInt() == Event.ONLOAD) {
+		if (event.getTypeInt() == Event.ONLOAD && !loaded) {
+			loaded = true;
 			pi.scaleImg(this);
 		}
 	}

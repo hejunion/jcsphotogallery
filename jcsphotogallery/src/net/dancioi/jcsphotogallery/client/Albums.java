@@ -143,11 +143,15 @@ public class Albums {
 	}
 
 	public String[] getAlbumCat1(){
-		return (String[]) albumCat1.toArray();
+		String cat1Res[] = new String[albumCat1.size()];
+		albumCat1.toArray(cat1Res);
+		return cat1Res;
 	}
 
 	public String[] getAlbumCat2(){
-		return (String[]) albumCat2.toArray();
+		String cat2Res[] = new String[albumCat2.size()];
+		albumCat2.toArray(cat2Res);
+		return cat2Res;
 	}
 
 	public int getNrAlbums(){

@@ -112,15 +112,9 @@ public class ReadXML {
 	 */
 	public void readAlbums(String xmlText){
 		Document document = null;
-		boolean readAlbumsFlag = false;
 		try{
 			document = XMLParser.parse(xmlText);
-			readAlbumsFlag = true;
-		}
-		catch(DOMParseException de){
-			new ReadException("File "+getCurrentXMLFile()+" parse exception. Use a XML editor to avoid syntax errors in xml file.");
-		}
-		if(readAlbumsFlag){
+
 			Element element = document.getDocumentElement();
 			XMLParser.removeWhitespace(element);
 
@@ -131,9 +125,7 @@ public class ReadXML {
 			albums = false;
 
 			NodeList albums = element.getElementsByTagName("album");
-			int albumsCount = albums.getLength();
 
-			//pg.albums = new Albums(albumsCount);
 			pg.initializeAlbums();
 
 			for (int i = 0; i < albums.getLength(); i++) {
@@ -145,9 +137,12 @@ public class ReadXML {
 				pg.albums.addAlbumCat1(i, elAlbum.getAttribute("cat1"));
 				pg.albums.addAlbumCat2(i, elAlbum.getAttribute("cat2"));
 			}
-			pg.albums.showAll();		// at the beginning show all albums.
+			pg.albums.showAll();		// at the beginning shows all albums.
 			pg.center.prepareImg("gallery/", pg.albums.getNrAlbums(), pg.albums.getAlbum(), pg.albums.getAlbumName());
 			pg.sA.sortAlbums(pg.albums.getAlbumCat1(), pg.albums.getAlbumCat2());
+		}
+		catch(DOMParseException de){
+			new ReadException("File "+getCurrentXMLFile()+" parse exception. Use a XML editor to avoid syntax errors in xml file.");
 		}
 	}
 
@@ -156,15 +151,9 @@ public class ReadXML {
 	 */
 	public void readAlbum(String xmlText){
 		Document document = null;
-		boolean readAlbumFlag = false;
 		try{
 			document = XMLParser.parse(xmlText);
-			readAlbumFlag = true;
-		}
-		catch(DOMParseException de){
-			new ReadException("File "+getCurrentXMLFile()+" parse exception. Use a XML editor to avoid syntax errors in xml file.");
-		}
-		if(readAlbumFlag){
+
 			pg.albumsFlag = false;
 			Element element = document.getDocumentElement();
 			XMLParser.removeWhitespace(element);
@@ -186,6 +175,9 @@ public class ReadXML {
 			}
 
 			pg.center.prepareImg(curentImgPath, imgCount, imgT, imgName, img, imgComment);
+		}
+		catch(DOMParseException de){
+			new ReadException("File "+getCurrentXMLFile()+" parse exception. Use a XML editor to avoid syntax errors in xml file.");
 		}
 	}
 

@@ -24,6 +24,8 @@
 
 package net.dancioi.jcsphotogallery.app;
 
+import javax.swing.JPanel;
+
 /**
  * This class .
  *  
@@ -31,7 +33,7 @@ package net.dancioi.jcsphotogallery.app;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class PanelCenter {
+public class PanelCenter extends JPanel{
 
 
 	private void initialize() {

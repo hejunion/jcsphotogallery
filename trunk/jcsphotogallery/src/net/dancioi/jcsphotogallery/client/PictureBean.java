@@ -1,5 +1,5 @@
 /*	
- * 	File    : Picture.java
+ * 	File    : PictureBean.java
  * 
  * 	Copyright (C) 2011 Daniel Cioi <dan@dancioi.net>
  *                              
@@ -22,7 +22,9 @@
  * 
  */
 
-package net.dancioi.jcsphotogallery.app;
+package net.dancioi.jcsphotogallery.client;
+
+import net.dancioi.jcsphotogallery.app.Album;
 
 /**
  * This class .
@@ -31,7 +33,7 @@ package net.dancioi.jcsphotogallery.app;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class Picture {
+public class PictureBean {
 
 	private String name;
 

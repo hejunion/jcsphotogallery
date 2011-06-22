@@ -43,7 +43,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class ReadXML {
+public class ReadXML extends ReadXMLGeneric{
 
 	Jcsphotogallery pg;
 	boolean albums = true;		// flag to read the albums xml file just once.
@@ -123,23 +123,24 @@ public class ReadXML {
 			pg.setGalleryName(galleryName, nameHomePage);
 
 			albums = false;
-
+//TODO add a file version and an element with categories number;
+			String[] categories = new String[2];
+			
 			NodeList albums = element.getElementsByTagName("album");
 
 			pg.initializeAlbums();
 
 			for (int i = 0; i < albums.getLength(); i++) {
 				Element elAlbum = (Element) albums.item(i);
-
-				pg.albums.addAlbum(i, elAlbum.getAttribute("img"));
-				pg.albums.addAlbumFolderName(i, elAlbum.getAttribute("folderName"));
-				pg.albums.addAlbumName(i, elAlbum.getAttribute("name"));
-				pg.albums.addAlbumCat1(i, elAlbum.getAttribute("cat1"));
-				pg.albums.addAlbumCat2(i, elAlbum.getAttribute("cat2"));
+				
+				categories[0] = elAlbum.getAttribute("cat1");
+				categories[1] = elAlbum.getAttribute("cat2");
+				pg.albums.addAlbum(new AlbumBean(elAlbum.getAttribute("img"), elAlbum.getAttribute("folderName"), 
+						elAlbum.getAttribute("name"), categories));
 			}
 			pg.albums.showAll();		// at the beginning shows all albums.
-			pg.center.prepareImg("gallery/", pg.albums.getNrAlbums(), pg.albums.getAlbum(), pg.albums.getAlbumName());
-			pg.sA.sortAlbums(pg.albums.getAlbumCat1(), pg.albums.getAlbumCat2());
+			pg.center.prepareImg("gallery/", pg.albums.getNrAlbums(), pg.albums.getAlbumsVisible(), pg.albums.getAlbumsNameVisible());
+			pg.sA.sortAlbums(pg.albums.getAlbumsCategories());
 		}
 		catch(DOMParseException de){
 			new ReadException("File "+getCurrentXMLFile()+" parse exception. Use a XML editor to avoid syntax errors in xml file.");

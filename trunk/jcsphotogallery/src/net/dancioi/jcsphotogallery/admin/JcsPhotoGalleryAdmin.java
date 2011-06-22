@@ -25,12 +25,11 @@
 package net.dancioi.jcsphotogallery.admin;
 
 
-import com.google.gwt.user.client.Window;
+import net.dancioi.jcsphotogallery.client.Jcsphotogallery;
+import net.dancioi.webdav.client.WebdavClient;
+
 import com.google.gwt.user.client.ui.RootPanel;
-
-import net.dancioi.webdav.client.*;
-import net.dancioi.jcsphotogallery.client.*;
-
+// GWT Designer can cause problems with class path (uninstall it if it's the case).
 
 /**
  * 		JcsPhotoGallery Admin application.

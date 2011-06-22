@@ -24,6 +24,7 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
+import net.dancioi.jcsphotogallery.client.AlbumBean;
 import net.dancioi.jcsphotogallery.client.Albums;
 
 /**
@@ -50,11 +51,7 @@ public class AlbumsAdmin extends Albums{
 	}
 	
 	private void addAlbumOpt(){
-		addAlbum(0, "../ext/play.gif");
-		addAlbumFolderName(0, "");
-		addAlbumName(0,"");
-		addAlbumCat1(0,"");
-		addAlbumCat2(0,"");
+		addAlbum(new AlbumBean("../ext/play.gif", "", "", new String[]{}));
 	}
 	
 	

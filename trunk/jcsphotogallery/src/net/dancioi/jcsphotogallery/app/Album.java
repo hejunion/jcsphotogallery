@@ -24,7 +24,8 @@
 
 package net.dancioi.jcsphotogallery.app;
 
-import java.util.List;
+import net.dancioi.jcsphotogallery.client.AlbumBean;
+
 
 /**
  * This class .
@@ -33,42 +34,8 @@ import java.util.List;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class Album implements AlbumNode {
+public class Album extends AlbumBean implements AlbumNode {
 
-	private List pictures;
-
-	private String name;
-
-	private String folderName;
-
-	private List category;
-
-	private List thumbnail;
-
-	public void getName() {
-	}
-
-	public void setName() {
-	}
-
-	public void getFolderName() {
-	}
-
-	public void setFolderName() {
-	}
-
-	public List getCategory() {
-		return null;
-	}
-
-	public void setCategory() {
-	}
-
-	public void setThumbnail() {
-	}
-
-	public void getThumbnail() {
-	}
 
 	@Override
 	public void addPicture() {

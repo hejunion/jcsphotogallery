@@ -24,33 +24,166 @@
 
 package net.dancioi.jcsphotogallery.app;
 
+import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /**
- * This class .
+ * This class is the main application's frame.
  *  
  * @version 1.0 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class JcsPhotoGallery {
+public class JcsPhotoGallery extends JFrame{
 
+	private static final long serialVersionUID = 1L;
 	private PanelLeft  panelLeft;
 	private PanelTop  panelTop;
 	private PanelBottom  panelBottom;
 	private PanelCenter  panelCenter;
 	private Configs  configs;
 
+	/**
+	 * Default constructor.
+	 */
+	public JcsPhotoGallery(){
+		initialize();
+	}
+	
+	/**
+	 * Initialize.
+	 */
 	private void initialize() {
+		this.setSize(1200, 700);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setContentPane(getRootPanel());
+		this.setVisible(true);
+		getPreviousConfigs();
+	}
+	
+	/**
+	 * Method to get the JFrame's ContentPane.
+	 * @return JPanel
+	 */
+	private JPanel getRootPanel(){
+		JPanel rootPanel = new JPanel();
+		rootPanel.setLayout(new BorderLayout());
+		rootPanel.add(addLeftPanel(), BorderLayout.WEST);
+		
+		JPanel rightPanel = new JPanel();
+		rightPanel.add(addTopPanel(), BorderLayout.NORTH);
+		rightPanel.add(addBottomPanel(), BorderLayout.SOUTH);
+		rightPanel.add(addCenterPanel(), BorderLayout.CENTER);
+		
+		rootPanel.add(rightPanel);
+		return rootPanel;
+	}
+	
+	/**
+	 * Method to get the previous configuration.
+	 * If it's first time when the application run, then create a default configs object.
+	 */
+	private void getPreviousConfigs(){
+		try {
+			FileInputStream fis = new FileInputStream(new File("configs.cfg"));
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			configs = (Configs)ois.readObject();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if(configs==null) configs = new Configs(); 
 	}
 
-	private void addLeftPanel() {
+	/**
+	 * Method to save on configs.cfg file the current settings
+	 */
+	private void setCurrentSettings(){
+		try {
+			FileOutputStream fos = new FileOutputStream(new File("configs.cfg"));
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(configs);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	/**
+	 * Method to save the application's settings.
+	 */
+	public void saveSettings(){
+		setCurrentSettings();
+	}
+	
+	
+	/**
+	 * Method to get the current configs (settings).
+	 * @return
+	 */
+	public Configs getConfigs() {
+		return configs;
 	}
 
-	private void addTopPanel() {
+	/**
+	 * Method to modify application's configs (settings).
+	 * @param configs
+	 */
+	public void setConfigs(Configs configs) {
+		this.configs = configs;
 	}
 
-	private void addBottomPanel() {
+	/**
+	 * Center panel where the picture is shown.
+	 * @return
+	 */
+	private JPanel addCenterPanel() {
+		panelCenter = new PanelCenter();
+		return panelCenter;
+	}
+	
+	/**
+	 * Left panel with the gallery tree structure.
+	 * @return JPanel
+	 */
+	private JPanel addLeftPanel() {
+		panelLeft = new PanelLeft();
+		return panelLeft;
+	}
+
+	/**
+	 * Top panel.
+	 * @return JPanel
+	 */
+	private JPanel addTopPanel() {
+		panelTop = new PanelTop();
+		return panelTop;
+	}
+
+	/**
+	 * Bottom Panel.
+	 * @return JPanel
+	 */
+	private JPanel addBottomPanel() {
+		panelBottom = new PanelBottom();
+		return panelBottom;
 	}
 
 	public List getUpdatedGallery() {

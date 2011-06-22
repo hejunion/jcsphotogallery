@@ -1,7 +1,7 @@
 /*	
  * 	File    : Albums.java
  * 
- * 	Copyright (C) 2010 Daniel Cioi <dan@dancioi.net>
+ * 	Copyright (C) 2010-2011 Daniel Cioi <dan@dancioi.net>
  *                              
  *	www.dancioi.net/projects/Jcsphotogallery
  *
@@ -30,28 +30,25 @@ import java.util.ArrayList;
 /**
  * The class to keep the albums data.
  *  
- * @version 1.1 
+ * @version 1.2 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 public class Albums {
 	
-	ArrayList<String> album = new ArrayList<String>();					// array with albums strings.
-	ArrayList<String> albumFolderName = new ArrayList<String>();		// folder name for each album.
-	ArrayList<String> albumName = new ArrayList<String>();				// album name.
-	ArrayList<String> albumCat1 = new ArrayList<String>();				// album category; first sort criteria.
-	ArrayList<String> albumCat2 = new ArrayList<String>();				// album category; second sort criteria.
-	
-	
+	private ArrayList<AlbumBean> albums = new ArrayList<AlbumBean>();
 
 	int nrAlbumsV;					
 	String []albumV;				// albums strings (visible).
-	String []albumFolderNameV;		// folder name for each album visible).
-	String []albumNameV;			// album name visible). 
+	String []albumFolderNameV;		// folder name for each album (visible).
+	String []albumNameV;			// album name (visible). 
 	
 	public Albums(){
 		
 	}
 	
+	public void addAlbum(AlbumBean ab){
+		albums.add(ab);
+	}
 
 	/**
 	 * Show sorted albums.
@@ -70,9 +67,9 @@ public class Albums {
 		int in=0;
 		for(int i=0;i<visible.length;i++){
 			if(visible[i]){
-				albumS[in] = album.get(i);
-				albumFolderNameS[in] = albumFolderName.get(i);
-				albumNameS[in] = albumName.get(i);
+				albumS[in] = albums.get(i).getImg();
+				albumFolderNameS[in] = albums.get(i).getFolderName();
+				albumNameS[in] = albums.get(i).getName();
 				in++;
 			}
 		}
@@ -90,69 +87,18 @@ public class Albums {
 	}
 
 	protected void setVisibleAlbums(){
-		nrAlbumsV = album.size();
+		nrAlbumsV = albums.size();
 		albumV = new String[nrAlbumsV];
-		album.toArray(albumV);
 		albumFolderNameV = new String[nrAlbumsV];
-		albumFolderName.toArray(albumFolderNameV);
 		albumNameV = new String[nrAlbumsV];
-		albumName.toArray(albumNameV);
+		
+		for(int i=0;i<nrAlbumsV;i++){
+			albumV[i] = albums.get(i).getImg();
+			albumFolderNameV[i]= albums.get(i).getFolderName();
+			albumNameV[i] = albums.get(i).getName();
+		}
 	}
 	
-	
-	//public void addAlbum
-	
-	public void addAlbum(int i, String val){
-		album.add(val);
-	}
-
-	public void addAlbumFolderName(int i, String val){
-		albumFolderName.add(val);
-	}
-
-	public void addAlbumName(int i, String val){
-		albumName.add(val);
-	}
-
-	public void addAlbumCat1(int i, String val){
-		albumCat1.add(val);
-	}
-
-	public void addAlbumCat2(int i, String val){
-		albumCat2.add(val);
-	}
-
-	public String[] getAlbum(){
-		return albumV;
-	}
-
-	public String[] getAlbumFolderName(){
-		return albumFolderNameV;
-	}
-
-	public String getAlbumFolderName(int a){
-		return albumFolderNameV[a];
-	}
-
-	public String[] getAlbumName(){
-		return albumNameV;
-	}
-
-	public String getAlbumName(int a){
-		return albumNameV[a];
-	}
-
-	public String[] getAlbumCat1(){
-		String cat1Res[] = new String[albumCat1.size()];
-		albumCat1.toArray(cat1Res);
-		return cat1Res;
-	}
-
-	public String[] getAlbumCat2(){
-		String cat2Res[] = new String[albumCat2.size()];
-		albumCat2.toArray(cat2Res);
-		return cat2Res;
-	}
 
 	public int getNrAlbums(){
 		return nrAlbumsV;
@@ -163,8 +109,43 @@ public class Albums {
 	 * @return number of all albums.
 	 */
 	public int getAllAlbumsNr(){
-		return album.size();
+		return albums.size();
 	}
 	
+	
+	public String[] getAlbumsVisible(){
+		return albumV;
+	}
 
+	public String[] getAlbumsNameVisible(){
+		return albumNameV;
+	}
+	
+	public String getAlbumFolderName(int a){
+		return albumFolderNameV[a];
+	}
+	
+	public String getAlbumName(int a){
+		return albumNameV[a];
+	}
+	
+	/**
+	 * Method to get the albums categories.
+	 * format: [cat 0...nrMaxCategories][album 0...length]
+	 * @return
+	 */
+	public String[][] getAlbumsCategories(){
+		String[][] catResult = null;
+		int catLength = 0;
+		if(albums.size()>0)catLength = albums.get(0).getCategory().length;
+		catResult = new String[catLength][];
+		String[] cat = null;
+		for(int a=0; a<albums.size(); a++){
+			cat = albums.get(a).getCategory();
+			for(int c=0;c<cat.length;c++)
+				catResult[c][a] = cat[c];
+		}
+		return catResult;
+	}
+	
 }

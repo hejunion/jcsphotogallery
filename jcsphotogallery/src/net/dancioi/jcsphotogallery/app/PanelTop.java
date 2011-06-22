@@ -26,6 +26,8 @@ package net.dancioi.jcsphotogallery.app;
 
 import java.io.File;
 
+import javax.swing.JPanel;
+
 /**
  * This class .
  *  
@@ -33,7 +35,7 @@ import java.io.File;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class PanelTop {
+public class PanelTop extends JPanel{
 
 
 	private void initialize() {

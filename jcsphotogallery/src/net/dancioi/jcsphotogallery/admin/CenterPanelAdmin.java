@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 
+
 /**
  * The 3x3 grid where the image thumbnails are shown.
  * CENTER panel. 

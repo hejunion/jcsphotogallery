@@ -63,6 +63,10 @@ public class SortAlbums {
 		pg.topPanel.setSortedCat(getResult());
 	}
 
+	public void sortAlbums(String[][] categories){
+		sortAlbums(categories[0], categories[1]);
+	}
+	
 	/**
 	 * Method to flag which albums will be visible.
 	 * @param selected

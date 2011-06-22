@@ -24,6 +24,8 @@
 
 package net.dancioi.jcsphotogallery.app;
 
+import java.io.File;
+
 /**
  * This class .
  *  
@@ -32,11 +34,17 @@ package net.dancioi.jcsphotogallery.app;
  */
 
 public class Configs {
+	
+	private File galleryPath;
 
-	public void getConfigs() {
+	public File getGalleryPath() {
+		return galleryPath;
 	}
 
-	public void setConfigs() {
+	public void setGalleryPath(File galleryPath) {
+		this.galleryPath = galleryPath;
 	}
+
+
 
 }

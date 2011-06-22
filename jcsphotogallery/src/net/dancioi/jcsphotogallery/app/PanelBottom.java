@@ -24,6 +24,8 @@
 
 package net.dancioi.jcsphotogallery.app;
 
+import javax.swing.JPanel;
+
 /**
  * This class .
  *  
@@ -31,7 +33,7 @@ package net.dancioi.jcsphotogallery.app;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class PanelBottom {
+public class PanelBottom extends JPanel{
 
 	private GalleryExport albumsList;
 

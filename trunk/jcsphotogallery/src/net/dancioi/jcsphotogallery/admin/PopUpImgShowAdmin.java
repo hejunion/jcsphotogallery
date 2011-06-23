@@ -24,13 +24,13 @@
 
 package net.dancioi.jcsphotogallery.admin;
 
+import net.dancioi.jcsphotogallery.client.PictureBean;
 import net.dancioi.jcsphotogallery.client.PopUpImgShow;
 
 public class PopUpImgShowAdmin extends PopUpImgShow{
 
-	public PopUpImgShowAdmin(int imgStart, String imgPath, String[] imgFile,
-			String[] imgName, String[] imgComment) {
-		super(imgStart, imgPath, imgFile, imgName, imgComment);
+	public PopUpImgShowAdmin(int imgStart, String imgPath, PictureBean[] pictures) {
+		super(imgStart, imgPath, pictures);
 	}
 
 	

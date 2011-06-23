@@ -49,10 +49,8 @@ public class CenterPanel extends Grid{
 	protected boolean []cellOn = new boolean[9];	// flag to know which cells have images attached
 	protected int imgCountLimit = 9;
 	protected int imgCount;					// how many albums there are to know the size of  the array.
-	protected String []img;					// array with albums strings.
-	protected String []imgName;				// album name.
-	protected String []imgP;					// image full size, show on popup.
-	protected String []imgComment;			// image comment.
+	protected PictureBean[] pictures;
+	protected Thumbnails[] thumbnails;
 	protected String imgPath;
 	int page = 1;					// current page.
 	int pages;						// numbers of pages.
@@ -100,11 +98,10 @@ public class CenterPanel extends Grid{
 	 * @param imageP image full size
 	 * @param imageComment image comment
 	 */
-	public void prepareImg(String imagesPath, int imgagesCount, String[] image, String[] imageName, String[] imageP, String[] imageComment){
+	public void prepareImg(String imagesPath, int imgagesCount, PictureBean[] pictures){
 		pg.bottomPanel.setBupVisible(true);
-		prepareImg(imagesPath, imgagesCount, image, imageName);
-		imgP = imageP;
-		imgComment = imageComment;
+		this.pictures = pictures;
+		prepareImg(imagesPath, imgagesCount, pictures, true);
 	}
 
 	/**
@@ -115,7 +112,8 @@ public class CenterPanel extends Grid{
 	 * @param image image thumbnails
 	 * @param imageName image name
 	 */
-	public void prepareImg(String imagesPath, int imagesCount, String[] image, String[] imageName){
+	public void prepareImg(String imagesPath, int imagesCount, Thumbnails[] thumbnails, boolean visibleAll){
+		this.thumbnails = thumbnails;
 		imgCountLimit = 9;
 		if(imagesCount>9){
 			pg.bottomPanel.setBrightVisible(true);
@@ -128,9 +126,7 @@ public class CenterPanel extends Grid{
 			showPageNr(0,0);
 		}
 		imgCount = imagesCount;
-		if(imgCount < imgCountLimit)imgCountLimit = imgCount;
-		img = image;
-		imgName = imageName;
+		if(imgCount < imgCountLimit) imgCountLimit = imgCount;
 		page = 1;
 		imgId = 0;
 		imgPath = imagesPath;
@@ -181,9 +177,9 @@ public class CenterPanel extends Grid{
 		for(int h=0;h<3;h++){
 			for(int w=0;w<3;w++){
 				if(cellID<imgCountLimit){
-					cell[cellID] = new Image(imagesPath+img[imgId]);
-					cell[cellID].setTitle(imgName[imgId]);
-
+					cell[cellID] = new Image(imagesPath+thumbnails[imgId].getImgThumbnail());
+					cell[cellID].setTitle(thumbnails[imgId].getName());
+					
 					setWidget(h, w, cell[cellID]);
 					cellOn[cellID] = true;
 
@@ -265,7 +261,7 @@ public class CenterPanel extends Grid{
 	 * @param id
 	 */
 	protected void showPopUpImg(int id){
-		new PopUpImgShow(id-1, imgPath, imgP, imgName, imgComment).show();
+		new PopUpImgShow(id-1, imgPath, pictures).show();
 	}
 
 	/**

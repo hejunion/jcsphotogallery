@@ -24,7 +24,6 @@
 
 package net.dancioi.jcsphotogallery.client;
 
-import net.dancioi.jcsphotogallery.app.Album;
 
 /**
  * This class .
@@ -33,7 +32,7 @@ import net.dancioi.jcsphotogallery.app.Album;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class PictureBean {
+public class PictureBean implements Thumbnails{
 
 	private String name;
 
@@ -41,26 +40,51 @@ public class PictureBean {
 
 	private String description;
 
-	private String thumbnail;
+	private String imgThumbnail;
+	
 
-	public Album myAlbum;
-
-	public void setName() {
+	public PictureBean(String name, String fileName, String description,
+			String imgThumbnail) {
+		super();
+		this.name = name;
+		this.fileName = fileName;
+		this.description = description;
+		this.imgThumbnail = imgThumbnail;
 	}
 
-	public void getName() {
+	@Override
+	public String getImgThumbnail() {
+		return imgThumbnail;
 	}
 
-	public void setFileName() {
+	public void setImgThumbnail(String imgThumbnail) {
+		this.imgThumbnail = imgThumbnail;
 	}
 
-	public void getFileName() {
+	@Override
+	public String getName() {
+		return name;
 	}
 
-	public void setDescription() {
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void getDescription() {
+	public String getFileName() {
+		return fileName;
 	}
 
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
 }

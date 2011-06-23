@@ -43,58 +43,55 @@ public class PopUpImgShow extends PopupGeneric{
 
 //TODO set the autoplay on popUp (by user).
 
-	AbsolutePanel ap;
-	int popUpSizeX;
-	int popUpSizeY;
-	AbsolutePanel imgPanel;
-	int imgPanelSizeX;
-	int imgPanelSizeY;
-	AbsolutePanel bottomPanel;
+	private AbsolutePanel ap;
+	private int popUpSizeX;
+	private int popUpSizeY;
+	private AbsolutePanel imgPanel;
+	private int imgPanelSizeX;
+	private int imgPanelSizeY;
+	private AbsolutePanel bottomPanel;
 
-	String []imgName;
-	String []imgFile;
-	String []imgComment;
-	int imgStart;				// image id from to start.
-	String imgPath; 			// images path
-	ImagePopUp img; 			// image which will be shown.
+	private PictureBean[] pictures;
 	
-	Image next;
-	Image previous;
-	Image close;
+	private int imgStart;				// image id from to start.
+	private String imgPath; 			// images path
+	private ImagePopUp img; 			// image which will be shown.
+	
+	private Image next;
+	private Image previous;
+	private Image close;
 	
 	
-	Label lImgName;				// image name
-	Label lImgComment;			// image comment
+	private Label lImgName;				// image name
+	private Label lImgComment;			// image comment
 
-	int currentImg;
+	private int currentImg;
 	
 	/* add a loading message		*/
-	String loading;
-	Label loadingLabel;
-	int ind = 1;
-	Timer t;
+	private String loading;
+	private Label loadingLabel;
+	private int ind = 1;
+	private Timer t;
 	
 	/* cache the next and previous image		*/
-	Image imgCacheN;
-	Image imgCacheP;
+	private Image imgCacheN;
+	private Image imgCacheP;
 	
 	
 	//Button play;				// button AUTO PLAY
-	Image play;
+	private Image play;
 	private boolean playFlag = true;
 	private boolean autoPlayOn = false;
-	Timer tPlay;
+	private Timer tPlay;
 	private Label playMode;
 	
 	
 
-	public PopUpImgShow(int imgStart, String imgPath, String []imgFile, String []imgName,  String []imgComment){
+	public PopUpImgShow(int imgStart, String imgPath, PictureBean[] pictures){
 		super();
 		this.imgStart = imgStart;
 		this.imgPath = imgPath;
-		this.imgName = imgName;
-		this.imgFile = imgFile;
-		this.imgComment = imgComment;
+		this.pictures = pictures;
 		currentImg = imgStart;
 		initialize();
 	}
@@ -146,7 +143,7 @@ public class PopUpImgShow extends PopupGeneric{
 		play = new Image("ext/play.gif");
 		play.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(playFlag && currentImg < imgFile.length-1){
+				if(playFlag && currentImg < pictures.length-1){
 					autoPlay(true);
 					play.setUrl("ext/pause.gif");
 					playFlag = false;
@@ -176,7 +173,7 @@ public class PopUpImgShow extends PopupGeneric{
 
 		setWidget(ap);
 
-		addImage(imgPath+imgFile[imgStart]);
+		addImage(imgPath+pictures[imgStart].getFileName());
 
 		checkStartImg();
 	}
@@ -194,10 +191,10 @@ public class PopUpImgShow extends PopupGeneric{
 	 */
 	public void nextImg(){
 		showLoadingProcess(false);
-		if(currentImg<(imgFile.length-1)){
+		if(currentImg<(pictures.length-1)){
 			currentImg++;
 			checkButtons(currentImg);
-			addImage(imgPath+imgFile[currentImg]);
+			addImage(imgPath+pictures[currentImg].getFileName());
 		}
 	}
 
@@ -209,7 +206,7 @@ public class PopUpImgShow extends PopupGeneric{
 		if(currentImg>0){
 			currentImg--;
 			checkButtons(currentImg);
-			addImage(imgPath+imgFile[currentImg]);
+			addImage(imgPath+pictures[currentImg].getFileName());
 		}
 	}
 
@@ -221,7 +218,7 @@ public class PopUpImgShow extends PopupGeneric{
 	private void checkButtons(int id){
 		next.setVisible(true);
 		previous.setVisible(true);
-		if(id==(imgFile.length-1)){next.setVisible(false);
+		if(id==(pictures.length-1)){next.setVisible(false);
 			if(autoPlayOn){stopAutoPlay();playMode.setText("Last Picture");}
 		}
 		if(id==0) previous.setVisible(false);
@@ -278,8 +275,8 @@ public class PopUpImgShow extends PopupGeneric{
 		int iy = (int)(ioy*scalef);
 		img.setPixelSize(ix, iy);
 
-		lImgName.setText(imgName[currentImg]);
-		lImgComment.setText(imgComment[currentImg]);
+		lImgName.setText(pictures[currentImg].getName());
+		lImgComment.setText(pictures[currentImg].getDescription());
 		
 		clearImg();
 		imgPanel.add(img, (imgPanelSizeX-ix)/2, (imgPanelSizeY-iy)/2);
@@ -340,7 +337,7 @@ public class PopUpImgShow extends PopupGeneric{
 						loadingLabel.setText(loading.substring(0, ind));
 			      }
 			    };
-			    //t.schedule(500);
+			
 			    t.scheduleRepeating(500);
 		}
 		else{
@@ -355,8 +352,8 @@ public class PopUpImgShow extends PopupGeneric{
 	 * @param i picture id
 	 */
 	private void getNextAndPrevious(int i){
-		if(i<imgFile.length-1)imgCacheN = new Image(imgPath+imgFile[i+1]);
-		if(i>0)imgCacheP = new Image(imgPath+imgFile[i-1]);
+		if(i<pictures.length-1)imgCacheN = new Image(imgPath+pictures[i+1].getFileName());
+		if(i>0)imgCacheP = new Image(imgPath+pictures[i-1].getFileName());
 	}
 
 	/**

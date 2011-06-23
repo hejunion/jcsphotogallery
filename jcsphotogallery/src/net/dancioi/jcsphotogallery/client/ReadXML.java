@@ -35,7 +35,6 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 
-
 /**
  * The class to read the XML files from the web server.
  *  
@@ -46,7 +45,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 public class ReadXML extends ReadXMLGeneric{
 
 	Jcsphotogallery pg;
-	boolean albums = true;		// flag to read the albums xml file just once.
+	boolean albumsFlag = true;		// flag to read the albums xml file just once.
 	String curentImgPath;
 	String currentXMLFile;
 
@@ -59,6 +58,7 @@ public class ReadXML extends ReadXMLGeneric{
 	/**
 	 * Method to get the XML file from http server.
 	 */
+	@Override
 	public void getXML(String file, String imgPath){
 		curentImgPath = imgPath;
 		setCurrentXMLFile(file);
@@ -71,7 +71,7 @@ public class ReadXML extends ReadXMLGeneric{
 				}
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
-						if(albums)readAlbums(response.getText());
+						if(albumsFlag)readAlbums(response.getText());
 						else readAlbum(response.getText());	
 					} 
 					else if(404 == response.getStatusCode()){
@@ -80,7 +80,6 @@ public class ReadXML extends ReadXMLGeneric{
 					else{
 						new ReadException("Other exception on GET the "+getCurrentXMLFile() +" file");
 					}
-
 				}
 			});
 		} catch (RequestException ex) {
@@ -104,12 +103,12 @@ public class ReadXML extends ReadXMLGeneric{
 		return currentXMLFile;
 	}
 
-
 	/**
 	 * Method to get the albums' items' list.
 	 * Parse the XML string.
 	 * @param xmlText String.
 	 */
+	@Override
 	public void readAlbums(String xmlText){
 		Document document = null;
 		try{
@@ -122,24 +121,29 @@ public class ReadXML extends ReadXMLGeneric{
 			String nameHomePage = element.getElementsByTagName("homePage").item(0).getFirstChild().getNodeValue();
 			pg.setGalleryName(galleryName, nameHomePage);
 
-			albums = false;
+			albumsFlag = false;
 //TODO add a file version and an element with categories number;
 			String[] categories = new String[2];
 			
 			NodeList albums = element.getElementsByTagName("album");
+			int albumsCount = albums.getLength();
+			AlbumBean[] album = new AlbumBean[albumsCount];
 
 			pg.initializeAlbums();
 
-			for (int i = 0; i < albums.getLength(); i++) {
+			for (int i = 0; i < albumsCount; i++) {
 				Element elAlbum = (Element) albums.item(i);
 				
 				categories[0] = elAlbum.getAttribute("cat1");
 				categories[1] = elAlbum.getAttribute("cat2");
-				pg.albums.addAlbum(new AlbumBean(elAlbum.getAttribute("img"), elAlbum.getAttribute("folderName"), 
-						elAlbum.getAttribute("name"), categories));
+				album[i] = new AlbumBean(elAlbum.getAttribute("img"), elAlbum.getAttribute("folderName"), 
+						elAlbum.getAttribute("name"), categories);
 			}
+			
+			pg.albums.setAlbums(album);
 			pg.albums.showAll();		// at the beginning shows all albums.
-			pg.center.prepareImg("gallery/", pg.albums.getNrAlbums(), pg.albums.getAlbumsVisible(), pg.albums.getAlbumsNameVisible());
+			pg.center.prepareImg("gallery/", pg.albums.getNrAlbums(), pg.albums.getAlbumsVisible(), false);
+			
 			pg.sA.sortAlbums(pg.albums.getAlbumsCategories());
 		}
 		catch(DOMParseException de){
@@ -150,32 +154,32 @@ public class ReadXML extends ReadXMLGeneric{
 	/**
 	 * Method to get the album's images list.
 	 */
+	@Override
 	public void readAlbum(String xmlText){
 		Document document = null;
 		try{
 			document = XMLParser.parse(xmlText);
 
 			pg.albumsFlag = false;
+			
+			
 			Element element = document.getDocumentElement();
 			XMLParser.removeWhitespace(element);
 
 			NodeList images = element.getElementsByTagName("i");
 			int imgCount = images.getLength();
 
-			String []img = new String[imgCount];
-			String []imgT = new String[imgCount];
-			String []imgName = new String[imgCount];
-			String []imgComment = new String[imgCount];
-
+			PictureBean[] pictures = new PictureBean[imgCount]; 
+			
 			for (int i = 0; i < images.getLength(); i++) {
 				Element elAlbum = (Element) images.item(i);
-				imgT[i]= elAlbum.getAttribute("imgt");
-				img[i]= elAlbum.getAttribute("img");
-				imgName[i] = elAlbum.getAttribute("name");
-				imgComment[i] = elAlbum.getAttribute("comment");
+
+				pictures[i] = new PictureBean(elAlbum.getAttribute("name"), elAlbum.getAttribute("img"),
+						elAlbum.getAttribute("comment"), elAlbum.getAttribute("imgt"));
 			}
 
-			pg.center.prepareImg(curentImgPath, imgCount, imgT, imgName, img, imgComment);
+			
+			pg.center.prepareImg(curentImgPath, pictures.length, pictures, true);
 		}
 		catch(DOMParseException de){
 			new ReadException("File "+getCurrentXMLFile()+" parse exception. Use a XML editor to avoid syntax errors in xml file.");

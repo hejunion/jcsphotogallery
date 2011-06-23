@@ -77,8 +77,8 @@ public class CenterPanelAdmin extends CenterPanel{
 		for(int h=0;h<3;h++){
 			for(int w=0;w<3;w++){
 				if(cellID<imgCountLimit){
-					cell[cellID] = new Image(imagesPath+img[imgId]);
-					cell[cellID].setTitle(imgName[imgId]);
+					cell[cellID] = new Image(imagesPath+thumbnails[imgId].getImgThumbnail());
+					cell[cellID].setTitle(thumbnails[imgId].getName());
 					if(cellID==imgCount-1){
 						opp[cellID] = new SelectorBox(cell[cellID], false);
 					}
@@ -113,7 +113,7 @@ public class CenterPanelAdmin extends CenterPanel{
 	 */
 	@Override
 	protected void showPopUpImg(int id){
-		new PopUpImgShowAdmin(id-1, imgPath, imgP, imgName, imgComment).show();
+		new PopUpImgShowAdmin(id-1, imgPath, pictures).show();
 	}
 	
 	

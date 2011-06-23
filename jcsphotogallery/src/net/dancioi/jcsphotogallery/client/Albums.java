@@ -24,9 +24,6 @@
 
 package net.dancioi.jcsphotogallery.client;
 
-import java.util.ArrayList;
-
-
 /**
  * The class to keep the albums data.
  *  
@@ -35,20 +32,24 @@ import java.util.ArrayList;
  */
 public class Albums {
 	
-	private ArrayList<AlbumBean> albums = new ArrayList<AlbumBean>();
-
-	int nrAlbumsV;					
-	String []albumV;				// albums strings (visible).
-	String []albumFolderNameV;		// folder name for each album (visible).
-	String []albumNameV;			// album name (visible). 
+	private AlbumBean[] albums;
+	private AlbumBean[] albumsVisible;
+	private int nrAlbumsVisible;					
 	
 	public Albums(){
 		
 	}
 	
-	public void addAlbum(AlbumBean ab){
-		albums.add(ab);
+
+	public AlbumBean[] getAlbums() {
+		return albums;
 	}
+
+
+	public void setAlbums(AlbumBean[] albums) {
+		this.albums = albums;
+	}
+
 
 	/**
 	 * Show sorted albums.
@@ -57,26 +58,19 @@ public class Albums {
 	public void showSorted(boolean[] visible){
 		int count = 0;
 		for(int i=0;i<visible.length;i++)
-			if(visible[i])count++;
+			if(visible[i]) count++;
 
+		nrAlbumsVisible = count;
 
-		nrAlbumsV = count;
-		String[] albumS = new String[count];
-		String[] albumFolderNameS = new String[count];
-		String[] albumNameS = new String[count];
+		albumsVisible = new AlbumBean[count];
 		int in=0;
 		for(int i=0;i<visible.length;i++){
-			if(visible[i]){
-				albumS[in] = albums.get(i).getImg();
-				albumFolderNameS[in] = albums.get(i).getFolderName();
-				albumNameS[in] = albums.get(i).getName();
+			if(visible[i]){				
+				albumsVisible[in] = new AlbumBean(albums[i].getImgThumbnail(), 
+						albums[i].getFolderName(), albums[i].getName(), null);
 				in++;
 			}
 		}
-		albumV = albumS;
-		albumFolderNameV = albumFolderNameS;
-		albumNameV = albumNameS;
-
 	}
 
 	/**
@@ -87,21 +81,19 @@ public class Albums {
 	}
 
 	protected void setVisibleAlbums(){
-		nrAlbumsV = albums.size();
-		albumV = new String[nrAlbumsV];
-		albumFolderNameV = new String[nrAlbumsV];
-		albumNameV = new String[nrAlbumsV];
+		nrAlbumsVisible = albums.length;
+	
+		albumsVisible = new AlbumBean[nrAlbumsVisible];
 		
-		for(int i=0;i<nrAlbumsV;i++){
-			albumV[i] = albums.get(i).getImg();
-			albumFolderNameV[i]= albums.get(i).getFolderName();
-			albumNameV[i] = albums.get(i).getName();
+		for(int i=0;i<nrAlbumsVisible;i++){
+			albumsVisible[i] = new AlbumBean(albums[i].getImgThumbnail(), 
+					albums[i].getFolderName(), albums[i].getName(), null);
 		}
 	}
 	
 
 	public int getNrAlbums(){
-		return nrAlbumsV;
+		return nrAlbumsVisible;
 	}
 	
 	/**
@@ -109,24 +101,20 @@ public class Albums {
 	 * @return number of all albums.
 	 */
 	public int getAllAlbumsNr(){
-		return albums.size();
+		return albums.length;
 	}
 	
 	
-	public String[] getAlbumsVisible(){
-		return albumV;
-	}
-
-	public String[] getAlbumsNameVisible(){
-		return albumNameV;
+	public AlbumBean[] getAlbumsVisible(){
+		return albumsVisible;
 	}
 	
 	public String getAlbumFolderName(int a){
-		return albumFolderNameV[a];
+		return albumsVisible[a].getFolderName();
 	}
 	
 	public String getAlbumName(int a){
-		return albumNameV[a];
+		return albumsVisible[a].getName();
 	}
 	
 	/**
@@ -137,11 +125,11 @@ public class Albums {
 	public String[][] getAlbumsCategories(){
 		String[][] catResult = null;
 		int catLength = 0;
-		if(albums.size()>0)catLength = albums.get(0).getCategory().length;
+		if(albums.length>0)catLength = albums[0].getCategory().length;
 		catResult = new String[catLength][];
 		String[] cat = null;
-		for(int a=0; a<albums.size(); a++){
-			cat = albums.get(a).getCategory();
+		for(int a=0; a<albums.length; a++){
+			cat = albums[a].getCategory();
 			for(int c=0;c<cat.length;c++)
 				catResult[c][a] = cat[c];
 		}

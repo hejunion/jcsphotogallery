@@ -145,7 +145,7 @@ public class Jcsphotogallery implements EntryPoint {
 	public void backToAlbums(){
 		bottomPanel.allOff();
 		albumsFlag = true;
-		center.prepareImg("gallery/", albums.getNrAlbums(), albums.getAlbumsVisible(), albums.getAlbumsNameVisible());
+		center.prepareImg("gallery/", albums.getNrAlbums(), albums.getAlbumsVisible(), true);
 
 	}
 

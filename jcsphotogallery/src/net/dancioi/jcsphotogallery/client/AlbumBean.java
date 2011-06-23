@@ -32,9 +32,9 @@ package net.dancioi.jcsphotogallery.client;
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class AlbumBean {
+public class AlbumBean implements Thumbnails{
 	
-	private String img;			// img is the thumbnail.
+	private String imgThumbnail;		
 	private String folderName;
 	private String name;
 	private String[] category;
@@ -53,35 +53,44 @@ public class AlbumBean {
 	 * @param thumbnail
 	 * @param category
 	 */
-	public AlbumBean(String img, String folderName, String name, String[] category) {
+	public AlbumBean(String imgThumbnail, String folderName, String name, String[] category) {
 		super();
-		this.img = img;
+		this.imgThumbnail = imgThumbnail;
 		this.folderName = folderName;
 		this.name = name;
 		this.category = category;
 	}
 
-	public String getImg() {
-		return img;
+	@Override
+	public String getImgThumbnail() {
+		return imgThumbnail;
 	}
-	public void setImg(String img) {
-		this.img = img;
+	
+	public void setImgThumbnail(String img) {
+		this.imgThumbnail = img;
 	}
+	
 	public String getFolderName() {
 		return folderName;
 	}
+	
 	public void setFolderName(String folderName) {
 		this.folderName = folderName;
 	}
+	
+	@Override
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String[] getCategory() {
 		return category;
 	}
+	
 	public void setCategory(String[] category) {
 		this.category = category;
 	}

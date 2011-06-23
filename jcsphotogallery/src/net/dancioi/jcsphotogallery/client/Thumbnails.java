@@ -1,5 +1,5 @@
 /*	
- * 	File    : AlbumsAdmin.java
+ * 	File    : Thumbnails.java
  * 
  * 	Copyright (C) 2011 Daniel Cioi <dan@dancioi.net>
  *                              
@@ -22,30 +22,19 @@
  * 
  */
 
-package net.dancioi.jcsphotogallery.admin;
-
-import net.dancioi.jcsphotogallery.client.AlbumBean;
-import net.dancioi.jcsphotogallery.client.Albums;
+package net.dancioi.jcsphotogallery.client;
 
 /**
- * 	The admin album class.
+ * Interface to show the image thumbnail.
  *  
  * @version 1.0 
  * @author Daniel Cioi <dan@dancioi.net>
  */
 
-public class AlbumsAdmin extends Albums{
-
+public interface Thumbnails {
+		
+	String getImgThumbnail();
 	
-	public void showAll(){
-		addAlbumOpt();
-		setVisibleAlbums();
-	}
-	
-	private void addAlbumOpt(){
-		//addAlbum(new AlbumBean("../ext/play.gif", "", "", new String[]{}));
-	}
-	
-	
+	String getName();
 	
 }
